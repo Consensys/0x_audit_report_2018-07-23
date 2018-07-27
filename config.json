@@ -1,5 +1,5 @@
 {
   "project_name": "0x Audit",
   "github_repo": "https://github.com/ConsenSys/0x_audit_2018-07-23",
-  "contract_dir": "packages/contracts/src/2.0.0"
+  "github_todo_audit_repo": "https://github.com/ConsenSys/todo-audits"
 }

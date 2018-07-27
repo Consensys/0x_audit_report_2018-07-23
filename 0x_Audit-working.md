@@ -139,6 +139,14 @@ Surya is an utility tool for smart contract systems. It provides a number of vis
 
 A complete list of functions with their visibility and modifiers can be found [here](...).
 
+### 5.4 Odyssey 
+
+<img height="120px" align="right" src="static-content/odyssey.png"/>
+
+Odyssey is an audit tool that acts as the glue between developers, auditors and tools. It leverages Github as the platform for building software and aligns to the approach that quality needs to be addressed as early as possible in the development life cycle and small iterative security activities spread out through development help to produce a more secure smart contract system.
+In its current version Odyssey helps to better communicate audit issues to development teams and to successfully close them.
+
+
 
 ## 6 Test Coverage Measurement
 
@@ -159,7 +167,7 @@ The state of test coverage at the time of our review can be viewed in html rende
 
 The SHA1 hashes of the source code files in scope of the audit are listed in the table below.
 
-<%= scope %>
+
 
 ## Appendix 2 - Severity 
 
