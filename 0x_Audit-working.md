@@ -21,13 +21,13 @@ ________________
 <img height="120px" Hspace="30" Vspace="10" align="right" src="static-content/dashboard.png"/> 
 
 #### Audit Details
-* **Project Name:** XXX
-* **Client Name:** YYY
-* **Client Contact:** YYY
-* **Auditors:** YYY
-* **GitHub :** XXX
-* **Languages:** Solidity
-* **Date:** XXX
+* **Project Name:** 0x 2.0
+* **Client Name:** 0x
+* **Client Contact:** Will Warren, Amir Bandeali
+* **Auditors:** Suhabe Bugrara, Gerhard Wagner, John Mardlin, 
+* **GitHub :** https://github.com/ConsenSys/0x_audit_2018-07-23
+* **Languages:** Solidity, TypeScript, JavaScript
+* **Date:** 2018-07-23 to 2018-09-10
 
 #### Number of issues per severity
 
