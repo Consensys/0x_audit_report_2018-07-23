@@ -31,7 +31,9 @@ ________________
 
 #### Number of issues per severity
 
-<%= issue_overview %>
+| <img height="30px"  src="static-assets/Minor.png"/> | <img height="30px" src="static-assets/Medium.png"/>  | <img height="30px" src="static-assets/Major.png"/> | <img height="30px" src="static-assets/Critical.png"/> | 
+|:-------------:|:-------------:|:-------------:|:-------------:|
+| **3**  |  **1**  | **0**  | **0** |
 
 ________________
 
