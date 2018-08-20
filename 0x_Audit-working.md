@@ -1,4 +1,4 @@
-# _Project Name_ Audit
+# _0x 2.0_ Audit
 
 
 <img height="120px" Hspace="30" Vspace="10" align="right" src="static-content/diligence.png"/> 
@@ -9,7 +9,7 @@
 
 ## 1 Summary
 
-ConsenSys Diligence conducted a security audit on ...
+From July 23, 2018 to September 10, 2018 ConsenSys Diligence conducted a security audit of the 0x Project's [second major iteration](https://github.com/ConsenSys/0x_audit_2018-07-23) of their contract system. The findings and recommendations are presented here in this report.
 
 <!-- Provide a headline description of what you have audited and what the goal or purpose of the audited project is. 
 Also add any other important context for the audit -->
