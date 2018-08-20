@@ -24,7 +24,7 @@ ________________
 * **Project Name:** 0x 2.0
 * **Client Name:** 0x
 * **Client Contact:** Will Warren, Amir Bandeali
-* **Auditors:** Suhabe Bugrara, Gerhard Wagner, John Mardlin, 
+* **Auditors:** Suhabe Bugrara, Gerhard Wagner, John Mardlin
 * **GitHub :** https://github.com/ConsenSys/0x_audit_2018-07-23
 * **Languages:** Solidity, TypeScript, JavaScript
 * **Date:** 2018-07-23 to 2018-09-10
