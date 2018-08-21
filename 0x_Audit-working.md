@@ -1,5 +1,4 @@
-# ConsenSys Diligence Audit Report
-## 0x 2.0.0
+# 0x 2.0.0 Audit Report
 
 
 <img height="120px" Hspace="30" Vspace="10" align="right" src="static-content/diligence.png"/> 
