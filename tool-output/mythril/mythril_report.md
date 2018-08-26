@@ -1,11 +1,4 @@
-@thec00n Text in brackets represents tool outputs from the file on the same line.
-
-One line outputs are on the same line as the `.sol` file in the directory tree.
-Multiple line outputs are footnoted with a reference on the same line as the `.sol` file in the directory tree.
-
-What follows is **outputs** from running `$ myth -x` on the `0x_audit_2018-07-23/packages/contracts/src/2.0.0/` directory tree.
-
-```
+``
 SUB-ROOT DIRECTORY
 ├── examples
 │   ├── ExchangeWrapper
