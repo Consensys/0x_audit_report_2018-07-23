@@ -1,0 +1,75 @@
+`$ solium --no-soliumrc --no-soliumignore --plugin security -d protocol`
+
+```
+protocol/AssetProxy/ERC20Proxy.sol
+  35:8    error    Avoid using Inline Assembly.    security/no-inline-assembly
+
+protocol/AssetProxy/ERC721Proxy.sol
+  35:8    error    Avoid using Inline Assembly.    security/no-inline-assembly
+
+protocol/AssetProxyOwner/AssetProxyOwner.sol
+  91:27    error    Consider using 'transfer' in place of 'call.value()'.    security/no-call-value
+  111:8    error    Avoid using Inline Assembly.                             security/no-inline-assembly
+
+protocol/Exchange/MixinAssetProxyDispatcher.sol
+  95:12     error    Avoid using Inline Assembly.    security/no-inline-assembly
+  124:12    error    Avoid using Inline Assembly.    security/no-inline-assembly
+
+protocol/Exchange/MixinExchangeCore.sol
+  186:12    warning    Avoid using 'block.timestamp'.    security/no-block-members
+
+protocol/Exchange/MixinTransactions.sol
+  98:26    warning    Avoid using low-level function 'delegatecall'.    security/no-low-level-calls
+  133:8    error      Avoid using Inline Assembly.                      security/no-inline-assembly
+
+protocol/Exchange/MixinWrapperFunctions.sol
+  82:8    error    Avoid using Inline Assembly.    security/no-inline-assembly
+
+protocol/Exchange/libs/LibAbiEncoder.sol
+  83:8    error    Avoid using Inline Assembly.    security/no-inline-assembly
+
+protocol/Exchange/libs/LibOrder.sol
+  121:8    error    Avoid using Inline Assembly.    security/no-inline-assembly
+
+✖ 10 errors, 2 warnings found.
+```
+
+`$ solium --no-soliumrc --no-soliumignore --plugin security -d forwarder`
+
+```
+forwarder/MixinAssets.sol
+  91:29    warning    Avoid using low-level function 'call'.    security/no-low-level-calls
+  107:8    error      Avoid using Inline Assembly.              security/no-inline-assembly
+
+forwarder/MixinExchangeWrapper.sol
+  62:8    error    Avoid using Inline Assembly.    security/no-inline-assembly
+
+✖ 2 errors, 1 warning found.
+```
+
+`$ solium --no-soliumrc --no-soliumignore --plugin security -d utils`
+
+```
+utils/LibBytes/LibBytes.sol
+  36:8      error    Avoid using Inline Assembly.                                      security/no-inline-assembly
+  50:8      error    Avoid using Inline Assembly.                                      security/no-inline-assembly
+  72:12     error    Avoid using Inline Assembly.                                      security/no-inline-assembly
+  100:16    error    Avoid using Inline Assembly.                                      security/no-inline-assembly
+  129:16    error    Avoid using Inline Assembly.                                      security/no-inline-assembly
+  220:8     error    Avoid using Inline Assembly.                                      security/no-inline-assembly
+  243:8     error    Avoid using Inline Assembly.                                      security/no-inline-assembly
+  267:8     error    Avoid using Inline Assembly.                                      security/no-inline-assembly
+  297:4     error    "readAddress": Avoid assigning to function parameters.            security/no-assign-params
+  316:8     error    Avoid using Inline Assembly.                                      security/no-inline-assembly
+  329:4     error    "writeAddress": Avoid assigning to function parameters.           security/no-assign-params
+  348:8     error    Avoid using Inline Assembly.                                      security/no-inline-assembly
+  375:4     error    "readBytes32": Avoid assigning to function parameters.            security/no-assign-params
+  392:8     error    Avoid using Inline Assembly.                                      security/no-inline-assembly
+  402:4     error    "writeBytes32": Avoid assigning to function parameters.           security/no-assign-params
+  419:8     error    Avoid using Inline Assembly.                                      security/no-inline-assembly
+  470:8     error    Avoid using Inline Assembly.                                      security/no-inline-assembly
+  485:4     error    "readBytesWithLength": Avoid assigning to function parameters.    security/no-assign-params
+  505:8     error    Avoid using Inline Assembly.                                      security/no-inline-assembly
+
+✖ 19 errors found.
+```
