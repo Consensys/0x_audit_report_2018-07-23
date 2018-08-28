@@ -1,4 +1,4 @@
-# _Project Name_ Audit
+# 0x 2.0 Audit
 
 
 <img height="120px" Hspace="30" Vspace="10" align="right" src="static-content/diligence.png"/> 
@@ -11,6 +11,49 @@
   * [1.4 Key Observations/Recommendations](#14-key-observationsrecommendations)
 * [2 Issue Overview](#2-issue-overview)
 * [3 Issue Detail](#3-issue-detail)
+  * [3.1 MixinSignatureValidator: Insecure signature validator SignatureType.Caller](#31-mixinsignaturevalidator-insecure-signature-validator-signaturetypecaller)
+  * [3.2 LibBytes: Insufficient Testing](#32-libbytes-insufficient-testing)
+  * [Description](#description)
+  * [3.3 LibBytes: readBytes4 does not adhere to spec](#33-libbytes-readbytes4-does-not-adhere-to-spec)
+  * [Description](#description)
+  * [3.4 AssetProxyOwner: readBytes4 does not adhere to spec](#34-assetproxyowner-readbytes4-does-not-adhere-to-spec)
+  * [Description](#description)
+  * [3.5 MixinAuthorizable: Insufficient Testing](#35-mixinauthorizable-insufficient-testing)
+  * [Description](#description)
+  * [Remediation](#remediation)
+  * [3.6 ERC721Proxy: Insufficient Testing](#36-erc721proxy-insufficient-testing)
+  * [Description](#description)
+  * [3.7 ERC721Proxy: fallback function silently fails](#37-erc721proxy-fallback-function-silently-fails)
+  * [Description](#description)
+  * [Remediation](#remediation)
+  * [3.8 ERC20Proxy: fallback function silently fails](#38-erc20proxy-fallback-function-silently-fails)
+  * [Description](#description)
+  * [Remediation](#remediation)
+  * [3.9 ERC20Proxy: Insufficient testing](#39-erc20proxy-insufficient-testing)
+  * [Description](#description)
+  * [3.10 ERC721Token: inaccurate isContract function](#310-erc721token-inaccurate-iscontract-function)
+  * [3.11 AssetProxyOwner duplicates code for readBytes4 function](#311-assetproxyowner-duplicates-code-for-readbytes4-function)
+  * [Description](#description)
+  * [Remediation](#remediation)
+  * [3.12 Outdated compiler version](#312-outdated-compiler-version)
+  * [3.13 Use of this.balance in WETH9.sol](#313-use-of-thisbalance-in-weth9sol)
+* [Description](#description)
+* [Recommendation](#recommendation)
+  * [3.14 ERC20Proxy: Reconsider use of inline assembly](#314-erc20proxy-reconsider-use-of-inline-assembly)
+  * [Description](#description)
+  * [Remediation](#remediation)
+  * [3.15 ERC20Proxy: Unclear comments](#315-erc20proxy-unclear-comments)
+  * [Description](#description)
+  * [3.16 ERC20Proxy/ERC721Proxy: LibBytes imported but not used](#316-erc20proxyerc721proxy-libbytes-imported-but-not-used)
+  * [Description](#description)
+  * [Remediation](#remediation)
+  * [3.17 LibBytes is imported but never used](#317-libbytes-is-imported-but-never-used)
+* [Description](#description)
+* [Recommendation](#recommendation)
+  * [3.18 Optimization: refine function visibilities in the Exchange for gas efficiency](#318-optimization-refine-function-visibilities-in-the-exchange-for-gas-efficiency)
+* [Description](#description)
+* [Remediation](#remediation)
+  * [3.19 LibConstants: dynamic constructor initialisation](#319-libconstants-dynamic-constructor-initialisation)
 * [4 Threat Model](#4-threat-model)
   * [4.1 Overview](#41-overview)
   * [4.2 Detail](#42-detail)
@@ -18,6 +61,7 @@
   * [5.1 Mythril](#51-mythril)
   * [5.2 Solhint](#52-solhint)
   * [5.3 Surya](#53-surya)
+  * [5.4 Odyssey](#54-odyssey)
 * [6 Test Coverage Measurement](#6-test-coverage-measurement)
 * [Appendix 1 - File Hashes](#appendix-1---file-hashes)
 * [Appendix 2 - Severity](#appendix-2---severity)
@@ -31,7 +75,7 @@
 
 ## 1 Summary
 
-ConsenSys Diligence conducted a security audit on ...
+From July 23, 2018 to September 10, 2018 ConsenSys Diligence conducted a security audit of the 0x Project's [second major iteration](https://github.com/ConsenSys/0x_audit_2018-07-23) of their contract system. The findings and recommendations are presented here in this report.
 
 <!-- Provide a headline description of what you have audited and what the goal or purpose of the audited project is. 
 Also add any other important context for the audit -->
@@ -43,20 +87,22 @@ ________________
 <img height="120px" Hspace="30" Vspace="10" align="right" src="static-content/dashboard.png"/> 
 
 #### Audit Details
-* **Project Name:** XXX
-* **Client Name:** YYY
-* **Client Contact:** YYY
-* **Auditors:** YYY
-* **GitHub :** XXX
-* **Languages:** Solidity
-* **Date:** XXX
+* **Project Name:** 0x 2.0
+* **Client Name:** 0x
+* **Client Contact:** Will Warren, Amir Bandeali
+* **Auditors:** Suhabe Bugrara, Gerhard Wagner, John Mardlin
+* **GitHub :** https://github.com/ConsenSys/0x_audit_2018-07-23
+* **Languages:** Solidity, TypeScript, JavaScript
+* **Date:** 2018-07-23 to 2018-09-10
 
 #### Number of issues per severity
 
 
-| <img height="30px"  src="static-content/Minor.png"/> | <img height="30px" src="static-content/Medium.png"/>  | <img height="30px" src="static-content/Major.png"/> | <img height="30px" src="static-content/Critical.png"/> | 
-|:-------------:|:-------------:|:-------------:|:-------------:|
-| **0**  |  **0**  | **0**  | **0** |
+| | <img height="30px"  src="static-content/minor.png"/> | <img height="30px" src="static-content/medium.png"/>  | <img height="30px" src="static-content/major.png"/> | <img height="30px" src="static-content/critical.png"/> | 
+|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|
+| <img height="30px"  src="static-content/open.png"/> | **9**  |  **9**  | **0**  | **1** |
+| <img height="30px"  src="static-content/closed.png"/> | **0**  |  **0**  | **0**  | **0** |
+
 
 ________________
 
@@ -119,13 +165,447 @@ The following table contains all the issues discovered during the audit. The iss
 
 | Chapter | Issue Title  | Issue Status | Severity |
 | ------------- | ------------- | ------------- | ------------- |
-
+ | 3.1 | [MixinSignatureValidator: Insecure signature validator SignatureType.Caller](#31-mixinsignaturevalidator-insecure-signature-validator-signaturetype-caller) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/critical.png"/> | 
+ | 3.2 | [LibBytes: Insufficient Testing](#32-libbytes-insufficient-testing) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.3 | [LibBytes: readBytes4 does not adhere to spec](#33-libbytes-readbytes4-does-not-adhere-to-spec) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.4 | [AssetProxyOwner: readBytes4 does not adhere to spec](#34-assetproxyowner-readbytes4-does-not-adhere-to-spec) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.5 | [MixinAuthorizable: Insufficient Testing](#35-mixinauthorizable-insufficient-testing) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.6 | [ERC721Proxy: Insufficient Testing](#36-erc721proxy-insufficient-testing) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.7 | [ERC721Proxy: fallback function silently fails](#37-erc721proxy-fallback-function-silently-fails) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.8 | [ERC20Proxy: fallback function silently fails](#38-erc20proxy-fallback-function-silently-fails) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.9 | [ERC20Proxy: Insufficient testing](#39-erc20proxy-insufficient-testing) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.10 | [ERC721Token: inaccurate isContract function](#310-erc721token-inaccurate-iscontract-function) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.11 | [AssetProxyOwner duplicates code for readBytes4 function](#311-assetproxyowner-duplicates-code-for-readbytes4-function) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.12 | [Outdated compiler version](#312-outdated-compiler-version) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.13 | [Use of this.balance in WETH9.sol](#313-use-of-this-balance-in-weth9-sol) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.14 | [ERC20Proxy: Reconsider use of inline assembly](#314-erc20proxy-reconsider-use-of-inline-assembly) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.15 | [ERC20Proxy: Unclear comments](#315-erc20proxy-unclear-comments) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.16 | [ERC20Proxy/ERC721Proxy: LibBytes imported but not used](#316-erc20proxyerc721proxy-libbytes-imported-but-not-used) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.17 | [LibBytes is imported but never used](#317-libbytes-is-imported-but-never-used) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.18 | [Optimization: refine function visibilities in the Exchange for gas efficiency](#318-optimization-refine-function-visibilities-in-the-exchange-for-gas-efficiency) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.19 | [LibConstants: dynamic constructor initialisation](#319-libconstants-dynamic-constructor-initialisation) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
 
 
 
 
 ## 3 Issue Detail  
 
+
+### 3.1 MixinSignatureValidator: Insecure signature validator SignatureType.Caller 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/critical.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/44](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/44)| The issue is currently under review |
+
+
+#### Description 
+
+MixinSignatureValidator has a signature validator called `SignatureType.Caller` that allows an order to be valid if `order.makerAddress == msg.sender`. If the `SignatureType.Caller` is set, no actual signature verification is performed for the order. An attacker could attack contracts that have:
+
+1. ERC20/ERC721 tokens.
+2. approved the Exchange proxy contracts to make transfers on their behalf.
+3. a function that allows users to make calls to the exchange trading functions. 
+
+A contract that has the above listed properties is the Forwarder contract. It requires a ZRX token balance to function properly and it also approves the Exchange proxy contracts to make transfers on its behalf. An attacker can create an order to obtain ZRX (in exchange for, e.g., 1 wei), using SignatureType.Caller with the Forwarder contract as the maker. If such an order is used in a call to `Forwarder::marketSellOrderWithEthAsync`, the Forwarder address will be `msg.sender` when calling `fillOrder`, the signature will be seen as valid and the order will be filled. 
+
+The following order is a POC for the attack (full details in [forwarder_malicious.ts.txt](https://github.com/ConsenSys/0x_audit_2018-07-23/files/2322170/forwarder_malicious.ts.txt)). The Forwarder will process the order and trade with itself as it is both the taker and the maker. The Forwarder will end up with exactly the balance after the Exchange contract has settled the order and Forwarder will transfer the takerAmount to itself and makerAmount to the attacker. 
+
+```
+Order {
+  makerAssetData: ZRX_ASSET_DATA 
+  takerAssetData: WETH_ASSET_DATA
+  makerAddress: address of Forwarder contract
+  takerAddress: 0x0 
+  makerAmount: as many ZRX tokens as the Forwarder contract owns
+  takerAmount: 1 (WETH)
+  ...
+}
+Signature: SignatureType.Caller
+```
+
+#### Remediation 
+
+Removing `SignatureType.Caller` is the most important counter measure. Assuming that msg.sender has created the order because `order.makerAddress == msg.sender` is unsafe not just for the Forwarder but any contract that calls into the Exchange contract and that has a token balance. Proper signature recovery and validation needs to be performed by all variations of `SignatureType`. 
+
+Forwarder should check every order that `order.makerAddress` is not the Forwarder address itself. 
+
+Exchange check that the `order.makerAddress` id not `order.takerAddress` before processing an order.  
+
+### 3.2 LibBytes: Insufficient Testing 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/49](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/49)| The issue is currently under review |
+
+
+### Description
+
+LibBytes is not thoroughly tested which is concerning especially due to its extensive use of inline assembly. Specifically, the following test cases are missing, among others not listed here:
+
+1. `readBytes4` when index > 0 and b.length >= index + 4
+2. `readBytes4` when index > 0 and b.length < index + 4
+
+
+
+
+
+### 3.3 LibBytes: readBytes4 does not adhere to spec 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/48](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/48)| The issue is currently under review |
+
+
+### Description
+
+The specification of the `readBytes4` function in LibBytes.sol is to "read an unpadded bytes4 value from a position in a byte array". However, the implementation ignores the `index` parameter and instead only ever returns the bytes4 at index 0, regardless of the value of the `index` parameter.
+
+### 3.4 AssetProxyOwner: readBytes4 does not adhere to spec 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/47](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/47)| The issue is currently under review |
+
+
+### Description
+
+The specification of the `readBytes4` function in AssetProxyOwner.sol is to "read an unpadded bytes4 value from a position in a byte array". However, the implementation ignores the `index` parameter and instead only ever returns the bytes4 at index 0, regardless of the value of the `index` parameter.
+
+### 3.5 MixinAuthorizable: Insufficient Testing 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/46](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/46)| The issue is currently under review |
+
+
+### Description
+
+The `authorizable.ts` file tests the MixinAuthorizable contract. The file uses the `address` variable as the parameter for the unit test cases of the contract functions. However, this `address` variable is always set to `owner` because of line 21. Thus the test file only covers scenarios where the owner is authorizing himself, and does not test the more common scenario where he is authorizing another, different address.
+
+### Remediation
+
+Set the `address` variable to a fresh account, different from `owner`.
+
+### 3.6 ERC721Proxy: Insufficient Testing 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/43](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/43)| The issue is currently under review |
+
+
+### Description
+
+ERC721Proxy is not thoroughly tested which is concerning especially due to its extensive use of inline assembly. Specifically, the following test cases are missing, among others not listed here:
+
+1. The `should throw if transferring 0 amount of a token` test case and the `should throw if transferring > 1 amount of a token` test case and the `should throw if allowances are too low` test case  do not check that the NFT ownership is unchanged.
+2. Fallback function should revert if a function selector is used besides the one for "transferFrom(bytes,address,address,uint256)".
+3. No test case for when assetData has extra data (beyond the minimum 68 bytes), which, according to the [specification](https://github.com/0xProject/0x-protocol-specification/blob/master/v2/v2-specification.md#erc721proxy), is possible: "The ERC721Proxy does not enforce strict length checks for assetData, which means that extra data may be appended to this field with any arbitrary encoding. Any extra data will be ignored by the ERC721Proxy but may be used in external contracts interacting with the Exchange contract. Relayers that do not desire this behavior should validate the length of all assetData fields contained in orders before acceptance."
+
+### 3.7 ERC721Proxy: fallback function silently fails 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/40](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/40)| The issue is currently under review |
+
+
+### Description 
+
+The ERC721Proxy fallback does not revert if an incorrect function selector is used. Instead, it silently fails, which is inconsistent with the rest of the fallback's behavior which is to revert on error,  and also inconsistent with the IAssetProxy interface specification "Either succeeds or throws". 
+
+Based on the spec, a client of IAssetProxy would assume that, because a (malformed) transaction sent to the IAssetProxy did not throw, that the token transfer succeeded (when it didn't) and may incorrectly notify the user that his order was fulfilled.
+
+### Remediation
+
+If the sender calls a function besides "transferFrom(bytes,address,address,uint256)", the fallback function should revert.
+
+### 3.8 ERC20Proxy: fallback function silently fails 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/39](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/39)| The issue is currently under review |
+
+
+### Description 
+
+The ERC20Proxy fallback does not revert if an incorrect function selector is used. Instead, it silently fails, which is inconsistent with the rest of the fallback's behavior which is to revert on error, and also inconsistent with the IAssetProxy interface specification "Either succeeds or throws".
+
+Based on the spec, a client of IAssetProxy would assume that, because a (malformed) transaction sent to the IAssetProxy did not throw, that the token transfer succeeded (when it didn't) and may incorrectly notify the user that his order was fulfilled.
+
+### Remediation
+
+If the sender calls a function besides "transferFrom(bytes,address,address,uint256)", the fallback function should revert.
+
+
+### 3.9 ERC20Proxy: Insufficient testing 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/34](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/34)| The issue is currently under review |
+
+
+### Description
+
+ERC20Proxy is not thoroughly tested which is concerning especially due to its extensive use of inline assembly. Specifically, the following test cases are missing, among others not listed here:
+
+1. The `should throw if requesting address is not authorized` test case and the `should throw if allowances are too low` test case  do not check that the balances are unchanged.
+2. The `should successfully transfer tokens` test case and the `should do nothing if transferring 0 amount of a token` test case does not check that all addresses (besides maker and taker) have not changed.
+3. The only token implementation tested is `DummyERC20Token` whose `transferFrom` method returns false on failure. The tests need to use other token implementations such as ones that revert on failure or ones that have the missing return type issue described in https://medium.com/coinmonks/missing-return-value-bug-at-least-130-tokens-affected-d67bf08521ca.
+4. No test case for "unlimited allowance".
+5. No test case for when `iszero(returndatasize)` is true after the `token.transferFrom` call.
+6. No test case for when `eq(returndatasize, 32)` is false after the `token.transferFrom` call.
+7. Fallback function should revert if a function selector is used besides the one for "transferFrom(bytes,address,address,uint256)".
+8. No test case for when assetData has extra data (beyond the minimum 36 bytes), which, according to the [specification](https://github.com/0xProject/0x-protocol-specification/blob/master/v2/v2-specification.md#erc20proxy), is possible: "The ERC20Proxy does not enforce strict length checks for assetData, which means that extra data may be appended to this field with any arbitrary encoding. Any extra data will be ignored by the ERC20Proxy but may be used in external contracts interacting with the Exchange contract. Relayers that do not desire this behavior should validate the length of all assetData fields contained in orders before acceptance."
+
+### 3.10 ERC721Token: inaccurate isContract function 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/23](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/23)| The issue is currently under review |
+
+
+#### Description 
+The function `isContract` verifies if a calling address is a contract or a human actor. The current implementation if used as a security control could be compromised by a contract that calls the `checkAndCallSafeTransfer` from the constructor at initialisation. 
+
+
+
+[packages/contracts/src/2.0.0/tokens/ERC721Token/ERC721Token.sol:L376-L406](https://github.com/ConsenSys/0x_audit_2018-07-23/blob/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/tokens/ERC721Token/ERC721Token.sol#L377-L407)
+
+```Solidity
+    function checkAndCallSafeTransfer(
+        address _from,
+        address _to,
+        uint256 _tokenId,
+        bytes _data)
+        internal
+        returns (bool)
+    {
+        if (!isContract(_to)) {
+            return true;
+        }
+        bytes4 retval = IERC721Receiver(_to).onERC721Received(_from, _tokenId, _data);
+        return (retval == ERC721_RECEIVED);
+    }
+
+    function isContract(address addr)
+        internal
+        view
+        returns (bool)
+    {
+        uint256 size;
+        // XXX Currently there is no better way to check if there is a contract in an address
+        // than to check the size of the code at that address.
+        // See https://ethereum.stackexchange.com/a/14016/36603
+        // for more details about how this works.
+        // TODO Check this again before the Serenity release, because all addresses will be
+        // contracts then.
+        assembly { size := extcodesize(addr) }  // solium-disable-line security/no-inline-assembly
+        return size > 0;
+    }
+}
+```
+
+
+
+#### Remediation 
+
+### 3.11 AssetProxyOwner duplicates code for readBytes4 function 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/50](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/50)| The issue is currently under review |
+
+
+### Description
+
+The AssetProxyOwner contract has a `readBytes4` function implementation which already exists in LibBytes. Avoid unnecessary code duplication to minimize errors.
+
+### Remediation
+
+Remove the `readBytes4` function from AssetProxyOwner and instead import LibBytes.
+
+
+### 3.12 Outdated compiler version 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/45](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/45)| The issue is currently under review |
+
+
+#### Description 
+
+Using an outdated compiler version can be problematic especially if there are publicly disclosed bugs and issues (see also https://github.com/ethereum/solidity/releases) that affect the current compiler version. 
+
+
+
+[packages/contracts/src/2.0.0/protocol/AssetProxyOwner/AssetProxyOwner.sol:L18](https://github.com/ConsenSys/0x_audit_2018-07-23/blob/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/protocol/AssetProxyOwner/AssetProxyOwner.sol#L19)
+
+```Solidity
+pragma solidity 0.4.10;
+```
+
+
+
+#### Remediation 
+
+It is recommended to use at least version 0.4.23 or remove the file as it does not seem to be used at the moment. 
+
+
+### 3.13 Use of this.balance in WETH9.sol 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/41](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/41)| The issue is currently under review |
+
+
+## Description
+
+The WETH9 contract, which is used as the system's EtherToken uses the contract's ether balance to track the totalSupply of the token. 
+
+
+
+[packages/contracts/src/2.0.0/tokens/EtherToken/WETH9.sol:L46](https://github.com/ConsenSys/0x_audit_2018-07-23/blob/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/tokens/EtherToken/WETH9.sol#L47)
+
+```Solidity
+    function totalSupply() public view returns (uint) {
+```
+
+L49
+
+## Recommendation
+
+This saves gas by not having to track a `totalSupply` storage value with each deposit and withdrawal. However this `totalSupply` value need not be equal to the sum of all account balances in the contract. This may lead to unforeseen issues with other contracts calling on the `totalSupply()` function. We leave it to the developer to consider if this is an acceptable trade off. 
+
+### 3.14 ERC20Proxy: Reconsider use of inline assembly 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/36](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/36)| The issue is currently under review |
+
+
+### Description
+
+The ERC20Proxy fallback function is written entirely in inline assembly. The rationale given was to optimize gas costs caused by unnecessary ABI encoding/decoding. In general, inline assembly is concerning from a security perspective because it bypasses compiler checks and inhibits human code reasoning.
+
+### Remediation 
+
+Consider minimizing the amount of inline assembly used. For example, the function selector check and the `authorized` map check on lines 37-61 likely do not need to be written in assembly from a gas savings standpoint.
+
+### 3.15 ERC20Proxy: Unclear comments 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/35](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/35)| The issue is currently under review |
+
+
+### Description 
+
+The following comment in ERC20Proxy is confusing to follow and can be written more clearly. For example, what does "It" refer to and what does "Params" refer to?
+```
+            // The token address is found as follows:
+            // * It is stored at offset 4 in `assetData` contents.
+            // * This is stored at offset 32 from `assetData`.
+            // * The offset to `assetData` from Params is stored at offset
+            //   4 in calldata.
+            // * The offset of Params in calldata is 4.
+            // So we read location 4 and add 32 + 4 + 4 to it.
+```
+
+### 3.16 ERC20Proxy/ERC721Proxy: LibBytes imported but not used 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/33](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/33)| The issue is currently under review |
+
+
+### Description 
+
+LibBytes is imported by ERC20Proxy.sol but never used.
+
+### Remediation
+
+Remove the import.
+
+### 3.17 LibBytes is imported but never used 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/27](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/27)| The issue is currently under review |
+
+
+## Description
+
+This line appears to be unnecessary. The contract compiles without it, and I cannot see where it would be used. 
+
+
+
+[packages/contracts/src/2.0.0/protocol/Exchange/MixinAssetProxyDispatcher.sol:L30](https://github.com/ConsenSys/0x_audit_2018-07-23/blob/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/protocol/Exchange/MixinAssetProxyDispatcher.sol#L31)
+
+```Solidity
+    using LibBytes for bytes;
+```
+
+
+
+## Recommendation
+
+Remove it. 
+
+### 3.18 Optimization: refine function visibilities in the Exchange for gas efficiency 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/26](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/26)| The issue is currently under review |
+
+
+## Description
+
+The `fillOrder()` function is labelled `public` because it is intended to be called either by external accounts, or from other 'wrapper' functions such as `fillOrKillOrder()`, and `batchFillOrders()`.
+
+Relative to `external` and `internal` functions, the `public` keyword is gas inefficient, because it can be run either by a `JUMP` from a function within the same contract or by a `CALL` from another contract. If called by a `JUMP` the arguments will be passed in memory. If called by a `CALL`, the arguments are in the call data. 
+
+Functions labelled `public` require extra code to handle both cases. 
+
+## Remediation
+
+Given the sensitivity to gas costs in this system, it would be more efficient to move the code of `fillOrder()` to an internal function (ie. `internalFillOrder()` which is called by the wrapper functions as well as `fillOrder()`.
+
+Additionally, it would be more efficient to change visibility of wrapper functions from `public` to `external`, unfortunately there is a [compiler issue](https://github.com/ethereum/solidity/issues/3293) preventing this with the v2 encoder.
+
+I have confirmed small gas savings in principle with very simple code samples, but have not yet tested in the Exchange itself. Given the number and size of arguments required to complete an order I expect they would be non-trivial.
+
+### 3.19 LibConstants: dynamic constructor initialisation 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/24](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/24)| The issue is currently under review |
+
+
+#### Description 
+According to the specs the dynamic constructor should be removed before deploying the contracts to the mainnet. Manually removing the code is not a good coding practice, it is recommended to build in a fail safe to ensure the code changes will not be missed. 
+
+
+
+[packages/contracts/src/2.0.0/protocol/Exchange/libs/LibConstants.sol:L41-L49](https://github.com/ConsenSys/0x_audit_2018-07-23/blob/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/protocol/Exchange/libs/LibConstants.sol#L42-L50)
+
+```Solidity
+    // @TODO: Remove when we deploy.
+    constructor (bytes memory zrxAssetData)
+        public
+    {
+        ZRX_ASSET_DATA = zrxAssetData;
+    }
+}
+// solhint-enable max-line-length
+```
+
+
+
+#### Remediation 
+Build in a fail safe that throws if the contracts are deployed on the mainnet without changing them beforehand. This could be achieved by checking the `block.number` to identify on which network the contracts are deployed. The mainnet is ahead of all the test networks and the following code could be used to prevent a successful launch on the mainnet without the code changes. 
+
+```Solidity 
+require(block.number <  6019600)
+````
 
 
 
@@ -168,6 +648,14 @@ Surya is an utility tool for smart contract systems. It provides a number of vis
 
 A complete list of functions with their visibility and modifiers can be found [here](...).
 
+### 5.4 Odyssey 
+
+<img height="120px" align="right" src="static-content/odyssey.png"/>
+
+Odyssey is an audit tool that acts as the glue between developers, auditors and tools. It leverages Github as the platform for building software and aligns to the approach that quality needs to be addressed as early as possible in the development life cycle and small iterative security activities spread out through development help to produce a more secure smart contract system.
+In its current version Odyssey helps to better communicate audit issues to development teams and to successfully close them.
+
+
 
 ## 6 Test Coverage Measurement
 
@@ -188,9 +676,6 @@ The state of test coverage at the time of our review can be viewed in html rende
 
 The SHA1 hashes of the source code files in scope of the audit are listed in the table below.
 
-
-| Contract File Name  | SHA1 hash |
-| ------------- | ------------- |
 
 
 ## Appendix 2 - Severity 
