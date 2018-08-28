@@ -77,9 +77,6 @@
 
 From July 23, 2018 to September 10, 2018 ConsenSys Diligence conducted a security audit of the 0x Project's [second major iteration](https://github.com/ConsenSys/0x_audit_2018-07-23) of their contract system. The findings and recommendations are presented here in this report.
 
-<!-- Provide a headline description of what you have audited and what the goal or purpose of the audited project is. 
-Also add any other important context for the audit -->
-
 ### 1.1 Audit Dashboard
 
 ________________
@@ -127,16 +124,23 @@ The focus of the audit was to verify that the smart contract system is secure, r
 #### Documentation
 
 The following documentation was available to the audit team:
-<!--
-* The [README](LINK) with detailed description about the mechanics of the crowd sale.
-* The [White Paper](LINK) explaining the concept behind interactive token crowd sales.
--->
+
+* The [Wiki](https://0xproject.com/wiki#) high level information on the 0x system contract system.
+* The [Version 2 specifications](https://github.com/0xProject/0x-protocol-specification/blob/master/v2/v2-specification.md) detailed specifications of the entire contract system.
+* Technical challenges around DEX and how 0x is designed to overcome them [1](https://blog.0xproject.com/front-running-griefing-and-the-perils-of-virtual-settlement-part-1-8554ab283e97) and [2](https://blog.0xproject.com/front-running-griefing-and-the-perils-of-virtual-settlement-part-2-921b00109e21).
+
 
 #### Scope
 
-#### Design
-  
+The audit focus was on the smart contract files, and test suites found in the following directories of the [0x-monorepo](https://github.com/0xProject/0x-monorepo/tree/v2-prototype) repository: 
 
+|  Directory | Commit hash | Commit date |
+|----------|-------------|-------------|
+| [packages/contracts/src/2.0.0/forwarder](https://github.com/0xProject/0x-monorepo/tree/v2-prototype/packages/contracts/src/2.0.0/forwarder)       | a05b14e4d9659be1cc495ee33fd8962ce773f87f          | 23rd July 2018| 
+| [packages/contracts/src/2.0.0/protocol](https://github.com/0xProject/0x-monorepo/tree/v2-prototype/packages/contracts/src/2.0.0/protocol)       | a05b14e4d9659be1cc495ee33fd8962ce773f87f          | 23rd July 2018| 
+| [packages/contracts/src/2.0.0/utils](https://github.com/0xProject/0x-monorepo/tree/v2-prototype/packages/contracts/src/2.0.0/utils)       | a05b14e4d9659be1cc495ee33fd8962ce773f87f          | 23rd July 2018| 
+
+  
 ### 1.4 Key Observations/Recommendations  
 
 <!-- Positive Observations: Examples 
@@ -674,9 +678,7 @@ The state of test coverage at the time of our review can be viewed in html rende
 
 ## Appendix 1 - File Hashes
 
-The SHA1 hashes of the source code files in scope of the audit are listed in the table below.
-
-
+Find the full list of files in the scope including SHA1 hashes in the [Surya tool directory](./tool-output/surya/report.md). 
 
 ## Appendix 2 - Severity 
 
