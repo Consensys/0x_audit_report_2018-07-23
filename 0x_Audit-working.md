@@ -1,4 +1,4 @@
-# 0x 2.0 Audit
+# 0x v2.0 Audit
 
 
 <img height="120px" Hspace="30" Vspace="10" align="right" src="static-content/diligence.png"/> 
@@ -21,7 +21,7 @@ ________________
 * **Project Name:** 0x 2.0
 * **Client Name:** 0x
 * **Client Contact:** Will Warren, Amir Bandeali
-* **Auditors:** Suhabe Bugrara, Gerhard Wagner, John Mardlin
+* **Auditors:** Suhabe Bugrara, Gerhard Wagner, John Mardlin, Steve Marx, Micah Dameron 
 * **GitHub :** https://github.com/ConsenSys/0x_audit_2018-07-23
 * **Languages:** Solidity, TypeScript, JavaScript
 * **Date:** 2018-07-23 to 2018-09-10
@@ -65,9 +65,17 @@ The audit focus was on the smart contract files, and test suites found in the fo
 
 |  Directory | Commit hash | Commit date |
 |----------|-------------|-------------|
-| [packages/contracts/src/2.0.0/forwarder](https://github.com/0xProject/0x-monorepo/tree/v2-prototype/packages/contracts/src/2.0.0/forwarder)       | a05b14e4d9659be1cc495ee33fd8962ce773f87f          | 23rd July 2018| 
-| [packages/contracts/src/2.0.0/protocol](https://github.com/0xProject/0x-monorepo/tree/v2-prototype/packages/contracts/src/2.0.0/protocol)       | a05b14e4d9659be1cc495ee33fd8962ce773f87f          | 23rd July 2018| 
-| [packages/contracts/src/2.0.0/utils](https://github.com/0xProject/0x-monorepo/tree/v2-prototype/packages/contracts/src/2.0.0/utils)       | a05b14e4d9659be1cc495ee33fd8962ce773f87f          | 23rd July 2018| 
+| [packages/contracts/src/2.0.0/forwarder](https://github.com/0xProject/0x-monorepo/tree/v2-prototype/packages/contracts/src/2.0.0/forwarder) [packages/contracts/src/2.0.0/protocol](https://github.com/0xProject/0x-monorepo/tree/v2-prototype/packages/contracts/src/2.0.0/protocol) [packages/contracts/src/2.0.0/utils](https://github.com/0xProject/0x-monorepo/tree/v2-prototype/packages/contracts/src/2.0.0/utils)  | a05b14e4d9659be1cc495ee33fd8962ce773f87f          | 23rd July 2018| 
+
+#### Architecture 
+
+The 0x audit scope does not include all of the components that can be found in a complete deployment. The Multi-Sig wallet and the token related contracts are out of scope. The in-scope items can be divided into the following three distinct parts:
+
+* **Exchange:** The Exchange contracts contain the bulk of the business logic within 0x protocol. It is the entry point for filling orders, cancelling orders, executing transactions, validating signatures and registering new ERC Proxy contracts into the system.
+* **Asset Proxy:** is responsible for decoding asset specific metadata contained within an order, performing the actual asset transfer and authorizing/unauthorizing Exchange contract addresses from calling the transfer methods.
+* **Forwarder:** enables users to buy assets (ERC20 or ERC721 tokens) with ETH. It removes the required knowledge of WETH and allowances. 
+
+<img src="static-content-project-specific/0x_contract_high_level.png"/> 
 
   
 ### 1.4 Key Observations/Recommendations  
@@ -84,12 +92,14 @@ The audit focus was on the smart contract files, and test suites found in the fo
 * **Include negative test cases:** The majority of the tests are positive test cases, meaning that the tests confirm that the system works with an expected sequence of actions and inputs. The test suite should be expanded to include more negative scenarios to ensure that the safe checks within the contract system are working correctly.  
 * **High Complexity:** The multiple library/contract system is complex in nature. Additional complexity is added by having ... 
 * **Stages/Time periods:**  The stages and various timings should be defined more clearly in separated control functions. Any state changing function that is called should check first against those control functions and check if it is allowed to be executed. 
-* **Fix all issues:** It is recommended to fix all the issues listed in the below chapters, at the very least the ones with severity Critical, Major and Medium. All issues have also been created as issues on [Github](LINK).
 * **Function visibility:** Best practices such as explicitly specifying function visibility should be followed.
 * **Improve Documentation:** Inconsistencies exist between the white paper/documentation and implementation.  
 * 
 -->
 
+* **Test coverage is incomplete:** Any contract system that is used on the main net should have as a minimum requirement a 100% test coverage.
+
+* **Fix all issues:** It is recommended to fix all the issues listed in the below chapters, at the very least the ones with severity Critical, Major and Medium. All issues have also been created in a separate [audit respoitory](https://github.com/ConsenSys/0x_audit_2018-07-23/).
 
 
 ## 2 Issue Overview  
@@ -104,16 +114,55 @@ The following table contains all the issues discovered during the audit. The iss
 
 <%= issues_markdown %>
 
+
 ## 4 Threat Model
 
-The creation of a threat model is beneficial when building smart contract systems as it helps to understand the potential security threats, assess risk, and identify appropriate mitigation strategies. This is especially useful during the design and development of a contract system as it allows to create a more resilient design which is more difficult to change post-development. 
+The creation of a Threat Model is beneficial when building smart contract systems as it helps to understand the potential security threats, assess risk, and identify appropriate mitigation strategies. This is especially useful during the design and development of a contract system as it allows to create a more resilient design which is more difficult to change post-development. 
 
-A threat model was created during the audit process in order to analyze the attack surface of the contract system and to focus review and testing efforts on key areas that a malicious actor would likely also attack. It consists of two parts a high level design diagram that help to understand the attack surface and a list of threats that exist for the contract system. 
+A Threat Model was created during the audit process in order to analyze the attack surface of the contract system and to focus review and testing efforts on key areas that a malicious actor would likely also attack. It consists of two parts a high level design diagram that help to understand the attack surface and a list of threats that exist for the contract system. 
 
-### 4.1 Overview 
+The 0x contract system enables a fairly flexibel DEX protocol that allows for several variants on how relayers and traders can interact with the system. The following Threat Model is an abstraction of the current system and has been compiled based on architecture and design specifictions. It does not claim completeness and can be considered as a complementary analysis type to the manual code review and automated tool analysis. 
 
 
-### 4.2 Detail
+**System components:**
+
+More information on system components can be found in chapter [1.3 System Overview](#13-system-overview).
+
+* Forwarder 
+* Exchange 
+* Asset Proxy 
+
+
+**Assets:**
+
+Assets need to be protected as potential threats could materialize in partial or full loss of: 
+
+* ERC20/ERC721 tokens: owned by Traders and Relayers 
+* Private keys:  
+
+**Actors:**
+
+Actors that take part in the 0x protocol:
+
+* Maker: creates and signs an order to trade token A for token B 
+* Taker: intends to fill an order through the Exchange and trade token B for token A  
+* Trader: Maker or Taker
+* Relayer Owner: aggregate orders, provide liquidity and take part in trades as a Maker or Taker 
+* Exchange/Proxy Owner: add and remove authorities to the Asset Proxy and register and unregister an Asset Proxy in the Exchange 
+* Miners: include order processing and settlement transactions in new blocks 
+
+
+### 4.1 Open Orderbook 
+
+|  Threat | Commit hash | Commit date |
+|----------|-------------|-------------|
+| Traders trust the Exchange Owner with their tokens when they approve the Exchange Proxy to settle trades on their behalf. If the Exchange/Proxy Owner gets hacked or misappropriates their funds  Traders could lose all of their ERC20/ERC721 tokens that they have approved for the Exchange Proxy.
+
+<img src="static-content-project-specific/0x_relayer_openorderbook.png"/> 
+
+### 4.2 Matcher 
+
+<img src="static-content-project-specific/0x_relayer_matcher.png"/> 
 
 
 
