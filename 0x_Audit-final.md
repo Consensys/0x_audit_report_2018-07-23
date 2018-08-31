@@ -12,58 +12,32 @@
 * [2 Issue Overview](#2-issue-overview)
 * [3 Issue Detail](#3-issue-detail)
   * [3.1 A malicious maker can empty a taker’s account of all tokens.](#31-a-malicious-maker-can-empty-a-takers-account-of-all-tokens)
-* [Description](#description)
-* [Recommendations](#recommendations)
   * [3.2 MixinSignatureValidator: Insecure signature validator SignatureType.Caller](#32-mixinsignaturevalidator-insecure-signature-validator-signaturetypecaller)
-  * [3.3 AssetProxyOwner: timelocked transactions affected by changing wallet parameters](#33-assetproxyowner-timelocked-transactions-affected-by-changing-wallet-parameters)
-  * [Description](#description)
-  * [3.4 AssetProxyOwner: removeAuthorizedAddressAtIndex requires multiple confirmations](#34-assetproxyowner-removeauthorizedaddressatindex-requires-multiple-confirmations)
-  * [Description](#description)
-  * [3.5 LibBytes: Insufficient Testing](#35-libbytes-insufficient-testing)
-  * [Description](#description)
-  * [3.6 LibBytes: readBytes4 does not adhere to spec](#36-libbytes-readbytes4-does-not-adhere-to-spec)
-  * [Description](#description)
-  * [3.7 AssetProxyOwner: readBytes4 does not adhere to spec](#37-assetproxyowner-readbytes4-does-not-adhere-to-spec)
-  * [Description](#description)
-  * [3.8 MixinAuthorizable: Insufficient Testing](#38-mixinauthorizable-insufficient-testing)
-  * [Description](#description)
-  * [Remediation](#remediation)
-  * [3.9 ERC721Proxy: Insufficient Testing](#39-erc721proxy-insufficient-testing)
-  * [Description](#description)
-  * [3.10 ERC721Proxy: fallback function silently fails](#310-erc721proxy-fallback-function-silently-fails)
-  * [Description](#description)
-  * [Remediation](#remediation)
-  * [3.11 ERC20Proxy: fallback function silently fails](#311-erc20proxy-fallback-function-silently-fails)
-  * [Description](#description)
-  * [Remediation](#remediation)
-  * [3.12 ERC20Proxy: Insufficient testing](#312-erc20proxy-insufficient-testing)
-  * [Description](#description)
-  * [3.13 ERC721Token: inaccurate isContract function](#313-erc721token-inaccurate-iscontract-function)
-  * [3.14 AssetProxyOwner duplicates code for readBytes4 function](#314-assetproxyowner-duplicates-code-for-readbytes4-function)
-  * [Description](#description)
-  * [Remediation](#remediation)
-  * [3.15 Outdated compiler version](#315-outdated-compiler-version)
-  * [3.16 Use of this.balance in WETH9.sol](#316-use-of-thisbalance-in-weth9sol)
-* [Description](#description)
-* [Recommendation](#recommendation)
-  * [3.17 ERC20Proxy: Reconsider use of inline assembly](#317-erc20proxy-reconsider-use-of-inline-assembly)
-  * [Description](#description)
-  * [Remediation](#remediation)
-  * [3.18 ERC20Proxy: Unclear comments](#318-erc20proxy-unclear-comments)
-  * [Description](#description)
-  * [3.19 ERC20Proxy/ERC721Proxy: LibBytes imported but not used](#319-erc20proxyerc721proxy-libbytes-imported-but-not-used)
-  * [Description](#description)
-  * [Remediation](#remediation)
-  * [3.20 LibBytes is imported but never used](#320-libbytes-is-imported-but-never-used)
-* [Description](#description)
-* [Recommendation](#recommendation)
-  * [3.21 Optimization: refine function visibilities in the Exchange for gas efficiency](#321-optimization-refine-function-visibilities-in-the-exchange-for-gas-efficiency)
-* [Description](#description)
-* [Remediation](#remediation)
-  * [3.22 LibConstants: dynamic constructor initialisation](#322-libconstants-dynamic-constructor-initialisation)
+  * [3.3 AssetProxyOwner: Insufficient Testing](#33-assetproxyowner-insufficient-testing)
+  * [3.4 AssetProxyOwner: timelocked transactions affected by changing wallet parameters](#34-assetproxyowner-timelocked-transactions-affected-by-changing-wallet-parameters)
+  * [3.5 AssetProxyOwner: removeAuthorizedAddressAtIndex requires multiple confirmations](#35-assetproxyowner-removeauthorizedaddressatindex-requires-multiple-confirmations)
+  * [3.6 LibBytes: Insufficient Testing](#36-libbytes-insufficient-testing)
+  * [3.7 LibBytes: readBytes4 does not adhere to spec](#37-libbytes-readbytes4-does-not-adhere-to-spec)
+  * [3.8 AssetProxyOwner: readBytes4 does not adhere to spec](#38-assetproxyowner-readbytes4-does-not-adhere-to-spec)
+  * [3.9 MixinAuthorizable: Insufficient Testing](#39-mixinauthorizable-insufficient-testing)
+  * [3.10 ERC721Proxy: Insufficient Testing](#310-erc721proxy-insufficient-testing)
+  * [3.11 ERC721Proxy: fallback function silently fails](#311-erc721proxy-fallback-function-silently-fails)
+  * [3.12 ERC20Proxy: fallback function silently fails](#312-erc20proxy-fallback-function-silently-fails)
+  * [3.13 ERC20Proxy: Insufficient testing](#313-erc20proxy-insufficient-testing)
+  * [3.14 ERC721Token: inaccurate isContract function](#314-erc721token-inaccurate-iscontract-function)
+  * [3.15 AssetProxyOwner: accepts ETH](#315-assetproxyowner-accepts-eth)
+  * [3.16 AssetProxyOwner duplicates code for readBytes4 function](#316-assetproxyowner-duplicates-code-for-readbytes4-function)
+  * [3.17 Outdated compiler version](#317-outdated-compiler-version)
+  * [3.18 Use of this.balance in WETH9.sol](#318-use-of-thisbalance-in-weth9sol)
+  * [3.19 ERC20Proxy: Reconsider use of inline assembly](#319-erc20proxy-reconsider-use-of-inline-assembly)
+  * [3.20 ERC20Proxy: Unclear comments](#320-erc20proxy-unclear-comments)
+  * [3.21 ERC20Proxy/ERC721Proxy: LibBytes imported but not used](#321-erc20proxyerc721proxy-libbytes-imported-but-not-used)
+  * [3.22 LibBytes is imported but never used](#322-libbytes-is-imported-but-never-used)
+  * [3.23 Optimization: refine function visibilities in the Exchange for gas efficiency](#323-optimization-refine-function-visibilities-in-the-exchange-for-gas-efficiency)
+  * [3.24 LibConstants: dynamic constructor initialisation](#324-libconstants-dynamic-constructor-initialisation)
 * [4 Threat Model](#4-threat-model)
-  * [4.1 Open Orderbook](#41-open-orderbook)
-  * [4.2 Matcher](#42-matcher)
+  * [4.1 Overview](#41-overview)
+  * [4.2 Threat Analysis](#42-threat-analysis)
 * [5 Tool based analysis](#5-tool-based-analysis)
   * [5.1 Mythril](#51-mythril)
   * [5.2 Solhint](#52-solhint)
@@ -104,7 +78,7 @@ ________________
 
 | | <img height="30px"  src="static-content/minor.png"/> | <img height="30px" src="static-content/medium.png"/>  | <img height="30px" src="static-content/major.png"/> | <img height="30px" src="static-content/critical.png"/> | 
 |:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|
-| <img height="30px"  src="static-content/open.png"/> | **9**  |  **11**  | **0**  | **2** |
+| <img height="30px"  src="static-content/open.png"/> | **10**  |  **12**  | **0**  | **2** |
 | <img height="30px"  src="static-content/closed.png"/> | **0**  |  **0**  | **0**  | **0** |
 
 
@@ -147,7 +121,7 @@ The audit focus was on the smart contract files, and test suites found in the fo
 
 #### Architecture 
 
-The 0x audit scope does not include all of the components that can be found in a complete deployment. The Multi-Sig wallet and the token related contracts are out of scope. The in-scope items can be divided into the following three distinct parts:
+The 0x audit scope does not include all of the components that can be found in a complete deployment. The MultiSig wallet and the token related contracts are out of scope. The in-scope items can be divided into the following three distinct parts:
 
 * **Exchange:** The Exchange contracts contain the bulk of the business logic within 0x protocol. It is the entry point for filling orders, cancelling orders, executing transactions, validating signatures and registering new ERC Proxy contracts into the system.
 * **Asset Proxy:** is responsible for decoding asset specific metadata contained within an order, performing the actual asset transfer and authorizing/unauthorizing Exchange contract addresses from calling the transfer methods.
@@ -188,26 +162,28 @@ The following table contains all the issues discovered during the audit. The iss
 | ------------- | ------------- | ------------- | ------------- |
  | 3.1 | [A malicious maker can empty a taker’s account of all tokens.](#31-a-malicious-maker-can-empty-a-taker’s-account-of-all-tokens-) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/critical.png"/> | 
  | 3.2 | [MixinSignatureValidator: Insecure signature validator SignatureType.Caller](#32-mixinsignaturevalidator-insecure-signature-validator-signaturetype-caller) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/critical.png"/> | 
- | 3.3 | [AssetProxyOwner: timelocked transactions affected by changing wallet parameters](#33-assetproxyowner-timelocked-transactions-affected-by-changing-wallet-parameters) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
- | 3.4 | [AssetProxyOwner: removeAuthorizedAddressAtIndex requires multiple confirmations](#34-assetproxyowner-removeauthorizedaddressatindex-requires-multiple-confirmations) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
- | 3.5 | [LibBytes: Insufficient Testing](#35-libbytes-insufficient-testing) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
- | 3.6 | [LibBytes: readBytes4 does not adhere to spec](#36-libbytes-readbytes4-does-not-adhere-to-spec) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
- | 3.7 | [AssetProxyOwner: readBytes4 does not adhere to spec](#37-assetproxyowner-readbytes4-does-not-adhere-to-spec) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
- | 3.8 | [MixinAuthorizable: Insufficient Testing](#38-mixinauthorizable-insufficient-testing) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
- | 3.9 | [ERC721Proxy: Insufficient Testing](#39-erc721proxy-insufficient-testing) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
- | 3.10 | [ERC721Proxy: fallback function silently fails](#310-erc721proxy-fallback-function-silently-fails) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
- | 3.11 | [ERC20Proxy: fallback function silently fails](#311-erc20proxy-fallback-function-silently-fails) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
- | 3.12 | [ERC20Proxy: Insufficient testing](#312-erc20proxy-insufficient-testing) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
- | 3.13 | [ERC721Token: inaccurate isContract function](#313-erc721token-inaccurate-iscontract-function) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
- | 3.14 | [AssetProxyOwner duplicates code for readBytes4 function](#314-assetproxyowner-duplicates-code-for-readbytes4-function) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
- | 3.15 | [Outdated compiler version](#315-outdated-compiler-version) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
- | 3.16 | [Use of this.balance in WETH9.sol](#316-use-of-this-balance-in-weth9-sol) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
- | 3.17 | [ERC20Proxy: Reconsider use of inline assembly](#317-erc20proxy-reconsider-use-of-inline-assembly) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
- | 3.18 | [ERC20Proxy: Unclear comments](#318-erc20proxy-unclear-comments) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
- | 3.19 | [ERC20Proxy/ERC721Proxy: LibBytes imported but not used](#319-erc20proxyerc721proxy-libbytes-imported-but-not-used) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
- | 3.20 | [LibBytes is imported but never used](#320-libbytes-is-imported-but-never-used) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
- | 3.21 | [Optimization: refine function visibilities in the Exchange for gas efficiency](#321-optimization-refine-function-visibilities-in-the-exchange-for-gas-efficiency) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
- | 3.22 | [LibConstants: dynamic constructor initialisation](#322-libconstants-dynamic-constructor-initialisation) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.3 | [AssetProxyOwner: Insufficient Testing](#33-assetproxyowner-insufficient-testing) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.4 | [AssetProxyOwner: timelocked transactions affected by changing wallet parameters](#34-assetproxyowner-timelocked-transactions-affected-by-changing-wallet-parameters) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.5 | [AssetProxyOwner: removeAuthorizedAddressAtIndex requires multiple confirmations](#35-assetproxyowner-removeauthorizedaddressatindex-requires-multiple-confirmations) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.6 | [LibBytes: Insufficient Testing](#36-libbytes-insufficient-testing) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.7 | [LibBytes: readBytes4 does not adhere to spec](#37-libbytes-readbytes4-does-not-adhere-to-spec) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.8 | [AssetProxyOwner: readBytes4 does not adhere to spec](#38-assetproxyowner-readbytes4-does-not-adhere-to-spec) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.9 | [MixinAuthorizable: Insufficient Testing](#39-mixinauthorizable-insufficient-testing) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.10 | [ERC721Proxy: Insufficient Testing](#310-erc721proxy-insufficient-testing) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.11 | [ERC721Proxy: fallback function silently fails](#311-erc721proxy-fallback-function-silently-fails) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.12 | [ERC20Proxy: fallback function silently fails](#312-erc20proxy-fallback-function-silently-fails) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.13 | [ERC20Proxy: Insufficient testing](#313-erc20proxy-insufficient-testing) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.14 | [ERC721Token: inaccurate isContract function](#314-erc721token-inaccurate-iscontract-function) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
+ | 3.15 | [AssetProxyOwner: accepts ETH](#315-assetproxyowner-accepts-eth) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.16 | [AssetProxyOwner duplicates code for readBytes4 function](#316-assetproxyowner-duplicates-code-for-readbytes4-function) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.17 | [Outdated compiler version](#317-outdated-compiler-version) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.18 | [Use of this.balance in WETH9.sol](#318-use-of-this-balance-in-weth9-sol) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.19 | [ERC20Proxy: Reconsider use of inline assembly](#319-erc20proxy-reconsider-use-of-inline-assembly) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.20 | [ERC20Proxy: Unclear comments](#320-erc20proxy-unclear-comments) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.21 | [ERC20Proxy/ERC721Proxy: LibBytes imported but not used](#321-erc20proxyerc721proxy-libbytes-imported-but-not-used) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.22 | [LibBytes is imported but never used](#322-libbytes-is-imported-but-never-used) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.23 | [Optimization: refine function visibilities in the Exchange for gas efficiency](#323-optimization-refine-function-visibilities-in-the-exchange-for-gas-efficiency) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
+ | 3.24 | [LibConstants: dynamic constructor initialisation](#324-libconstants-dynamic-constructor-initialisation) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/minor.png"/> | 
 
 
 
@@ -222,7 +198,7 @@ The following table contains all the issues discovered during the audit. The iss
 | <img height="30px" src="static-content/critical.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/53](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/53)| The issue is currently under review |
 
 
-## Description
+#### Description
 
 A malicious maker can empty a taker’s account of all tokens. The order does not need to involve a malicious token.
 
@@ -240,15 +216,19 @@ Note that, despite the comment, this check doesn’t prevent calls to other func
 
 
 
-[packages/contracts/src/2.0.0/protocol/Exchange/MixinTransactions.sol:L60](https://github.com/ConsenSys/0x_audit_2018-07-23/blob/dilligence-audit-7-23/packages/contracts/src/2.0.0/protocol/Exchange/MixinTransactions.sol#L61)
+[packages/contracts/src/2.0.0/protocol/Exchange/MixinTransactions.sol:L60-L64](https://github.com/ConsenSys/0x_audit_2018-07-23/blob/dilligence-audit-7-23/packages/contracts/src/2.0.0/protocol/Exchange/MixinTransactions.sol#L61-L65)
 
 ```Solidity
         // Prevent reentrancy
+        require(
+            currentContextAddress == address(0),
+            "REENTRANCY_ILLEGAL"
+        );
 ```
 
-L65
 
-## Recommendations
+
+#### Recommendations
 
 The developers have indicated plans for these mitigations, which we are evaluating: 
 
@@ -272,7 +252,7 @@ MixinSignatureValidator has a signature validator called `SignatureType.Caller` 
 
 A contract that has the above listed properties is the Forwarder contract. It requires a ZRX token balance to function properly and it also approves the Exchange proxy contracts to make transfers on its behalf. An attacker can create an order to obtain ZRX (in exchange for, e.g., 1 wei), using SignatureType.Caller with the Forwarder contract as the maker. If such an order is used in a call to `Forwarder::marketSellOrderWithEthAsync`, the Forwarder address will be `msg.sender` when calling `fillOrder`, the signature will be seen as valid and the order will be filled. 
 
-The following order is a POC for the attack (full details in [forwarder_malicious.ts.txt](https://github.com/ConsenSys/0x_audit_2018-07-23/files/2322170/forwarder_malicious.ts.txt)). The Forwarder will process the order and trade with itself as it is both the taker and the maker. The Forwarder will end up with exactly the balance after the Exchange contract has settled the order and Forwarder will transfer the takerAmount to itself and makerAmount to the attacker. 
+The following order is a POC for the attack (full details in [forwarder_malicious.ts.txt](https://github.com/ConsenSys/0x_audit_2018-07-23/files/2322170/forwarder_malicious.ts.txt)). The Forwarder will process the order and trade with itself as it is both the taker and the maker. The Forwarder will end up with exactly the same balance after the Exchange contract has settled the order and Forwarder will transfer the takerAmount to itself and makerAmount to the attacker. 
 
 ```
 Order {
@@ -295,14 +275,31 @@ Forwarder should check every order that `order.makerAddress` is not the Forwarde
 
 Exchange check that the `order.makerAddress` id not `order.takerAddress` before processing an order.  
 
-### 3.3 AssetProxyOwner: timelocked transactions affected by changing wallet parameters 
+### 3.3 AssetProxyOwner: Insufficient Testing 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/54](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/54)| The issue is currently under review |
+
+
+#### Description
+
+AssetProxyOwner is not thoroughly tested. Specifically, the following test cases are missing, among others not listed here:
+
+1. The test cases only seem to check the scenario where `REQUIRED_APPROVALS == owners.length`, as opposed to the more likely and general scenario where `REQUIRED_APPROVALS < owners.length`.
+2. `executionTransaction` should be callable be anyone, not just owners
+3. `executionTransaction` should execute at most once for a transaction
+4. `revokeConfirmation` not tested at all
+5. `confirmTransaction` should throw if an owner tries to confirms multiple times.
+
+### 3.4 AssetProxyOwner: timelocked transactions affected by changing wallet parameters 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/52](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/52)| The issue is currently under review |
 
 
-### Description
+#### Description
 
 Increasing the `required` parameter of AssetProxyOwner by invoking the `changeRequirement` function prevents the execution of a transaction that was previously fully confirmed and is currently under timelock. Even if the transaction eventually receives the additional confirmations needed for the new `required` value, its timelock will be reset by `confirmTransaction` and it will need to wait another 2 weeks to get executed.
 
@@ -310,25 +307,25 @@ Similarly, increasing the `secondsTimeLocked` parameter by invoking `changeTimeL
 
 Evaluate whether this is the intended behavior, and if so, document it so the wallet members understand the consequences of changing these parameters on unexecuted, fully confirmed transactions.
 
-### 3.4 AssetProxyOwner: removeAuthorizedAddressAtIndex requires multiple confirmations 
+### 3.5 AssetProxyOwner: removeAuthorizedAddressAtIndex requires multiple confirmations 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/51](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/51)| The issue is currently under review |
 
 
-### Description
+#### Description
 
 AssetProxyOwner allows the `removeAuthorizedAddressAtIndex` function to be executed without being subject to the time lock. However, it is still subject to `required` number of confirmations, which may be too slow in the situation where a security bug is discovered. Consider adding an immediate, temporary pause functionality that requires fewer (or even a single) confirmation to remove an insecure authorized address.
 
-### 3.5 LibBytes: Insufficient Testing 
+### 3.6 LibBytes: Insufficient Testing 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/49](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/49)| The issue is currently under review |
 
 
-### Description
+#### Description
 
 LibBytes is not thoroughly tested which is concerning especially due to its extensive use of inline assembly. Specifically, the following test cases are missing, among others not listed here:
 
@@ -339,51 +336,51 @@ LibBytes is not thoroughly tested which is concerning especially due to its exte
 
 
 
-### 3.6 LibBytes: readBytes4 does not adhere to spec 
+### 3.7 LibBytes: readBytes4 does not adhere to spec 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/48](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/48)| The issue is currently under review |
 
 
-### Description
+#### Description
 
 The specification of the `readBytes4` function in LibBytes.sol is to "read an unpadded bytes4 value from a position in a byte array". However, the implementation ignores the `index` parameter and instead only ever returns the bytes4 at index 0, regardless of the value of the `index` parameter.
 
-### 3.7 AssetProxyOwner: readBytes4 does not adhere to spec 
+### 3.8 AssetProxyOwner: readBytes4 does not adhere to spec 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/47](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/47)| The issue is currently under review |
 
 
-### Description
+#### Description
 
 The specification of the `readBytes4` function in AssetProxyOwner.sol is to "read an unpadded bytes4 value from a position in a byte array". However, the implementation ignores the `index` parameter and instead only ever returns the bytes4 at index 0, regardless of the value of the `index` parameter.
 
-### 3.8 MixinAuthorizable: Insufficient Testing 
+### 3.9 MixinAuthorizable: Insufficient Testing 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/46](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/46)| The issue is currently under review |
 
 
-### Description
+#### Description
 
 The `authorizable.ts` file tests the MixinAuthorizable contract. The file uses the `address` variable as the parameter for the unit test cases of the contract functions. However, this `address` variable is always set to `owner` because of line 21. Thus the test file only covers scenarios where the owner is authorizing himself, and does not test the more common scenario where he is authorizing another, different address.
 
-### Remediation
+#### Remediation
 
 Set the `address` variable to a fresh account, different from `owner`.
 
-### 3.9 ERC721Proxy: Insufficient Testing 
+### 3.10 ERC721Proxy: Insufficient Testing 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/43](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/43)| The issue is currently under review |
 
 
-### Description
+#### Description
 
 ERC721Proxy is not thoroughly tested which is concerning especially due to its extensive use of inline assembly. Specifically, the following test cases are missing, among others not listed here:
 
@@ -391,49 +388,49 @@ ERC721Proxy is not thoroughly tested which is concerning especially due to its e
 2. Fallback function should revert if a function selector is used besides the one for "transferFrom(bytes,address,address,uint256)".
 3. No test case for when assetData has extra data (beyond the minimum 68 bytes), which, according to the [specification](https://github.com/0xProject/0x-protocol-specification/blob/master/v2/v2-specification.md#erc721proxy), is possible: "The ERC721Proxy does not enforce strict length checks for assetData, which means that extra data may be appended to this field with any arbitrary encoding. Any extra data will be ignored by the ERC721Proxy but may be used in external contracts interacting with the Exchange contract. Relayers that do not desire this behavior should validate the length of all assetData fields contained in orders before acceptance."
 
-### 3.10 ERC721Proxy: fallback function silently fails 
+### 3.11 ERC721Proxy: fallback function silently fails 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/40](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/40)| The issue is currently under review |
 
 
-### Description 
+#### Description 
 
 The ERC721Proxy fallback does not revert if an incorrect function selector is used. Instead, it silently fails, which is inconsistent with the rest of the fallback's behavior which is to revert on error,  and also inconsistent with the IAssetProxy interface specification "Either succeeds or throws". 
 
 Based on the spec, a client of IAssetProxy would assume that, because a (malformed) transaction sent to the IAssetProxy did not throw, that the token transfer succeeded (when it didn't) and may incorrectly notify the user that his order was fulfilled.
 
-### Remediation
+#### Remediation
 
 If the sender calls a function besides "transferFrom(bytes,address,address,uint256)", the fallback function should revert.
 
-### 3.11 ERC20Proxy: fallback function silently fails 
+### 3.12 ERC20Proxy: fallback function silently fails 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/39](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/39)| The issue is currently under review |
 
 
-### Description 
+#### Description 
 
 The ERC20Proxy fallback does not revert if an incorrect function selector is used. Instead, it silently fails, which is inconsistent with the rest of the fallback's behavior which is to revert on error, and also inconsistent with the IAssetProxy interface specification "Either succeeds or throws".
 
 Based on the spec, a client of IAssetProxy would assume that, because a (malformed) transaction sent to the IAssetProxy did not throw, that the token transfer succeeded (when it didn't) and may incorrectly notify the user that his order was fulfilled.
 
-### Remediation
+#### Remediation
 
 If the sender calls a function besides "transferFrom(bytes,address,address,uint256)", the fallback function should revert.
 
 
-### 3.12 ERC20Proxy: Insufficient testing 
+### 3.13 ERC20Proxy: Insufficient testing 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/medium.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/34](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/34)| The issue is currently under review |
 
 
-### Description
+#### Description
 
 ERC20Proxy is not thoroughly tested which is concerning especially due to its extensive use of inline assembly. Specifically, the following test cases are missing, among others not listed here:
 
@@ -446,7 +443,7 @@ ERC20Proxy is not thoroughly tested which is concerning especially due to its ex
 7. Fallback function should revert if a function selector is used besides the one for "transferFrom(bytes,address,address,uint256)".
 8. No test case for when assetData has extra data (beyond the minimum 36 bytes), which, according to the [specification](https://github.com/0xProject/0x-protocol-specification/blob/master/v2/v2-specification.md#erc20proxy), is possible: "The ERC20Proxy does not enforce strict length checks for assetData, which means that extra data may be appended to this field with any arbitrary encoding. Any extra data will be ignored by the ERC20Proxy but may be used in external contracts interacting with the Exchange contract. Relayers that do not desire this behavior should validate the length of all assetData fields contained in orders before acceptance."
 
-### 3.13 ERC721Token: inaccurate isContract function 
+### 3.14 ERC721Token: inaccurate isContract function 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
@@ -498,23 +495,34 @@ The function `isContract` verifies if a calling address is a contract or a human
 
 #### Remediation 
 
-### 3.14 AssetProxyOwner duplicates code for readBytes4 function 
+### 3.15 AssetProxyOwner: accepts ETH 
+
+| Severity  | Status | Link | Remediation Comment |
+| ------------- | ------------- | ------------- | ------------- |
+| <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/55](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/55)| The issue is currently under review |
+
+
+#### Description
+
+The fallback function in AssetProxyOwner inherited from MultiSigWallet is payable. Thus AssetProxyOwner accepts ETH. Evaluate whether having ETH possibly stored in AssetProxyOwner is acceptable.
+
+### 3.16 AssetProxyOwner duplicates code for readBytes4 function 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/50](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/50)| The issue is currently under review |
 
 
-### Description
+#### Description
 
 The AssetProxyOwner contract has a `readBytes4` function implementation which already exists in LibBytes. Avoid unnecessary code duplication to minimize errors.
 
-### Remediation
+#### Remediation
 
 Remove the `readBytes4` function from AssetProxyOwner and instead import LibBytes.
 
 
-### 3.15 Outdated compiler version 
+### 3.17 Outdated compiler version 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
@@ -539,54 +547,56 @@ pragma solidity 0.4.10;
 
 It is recommended to use at least version 0.4.23 of the Solidity compiler.
 
-### 3.16 Use of this.balance in WETH9.sol 
+### 3.18 Use of this.balance in WETH9.sol 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/41](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/41)| The issue is currently under review |
 
 
-## Description
+#### Description
 
 The WETH9 contract, which is used as the system's EtherToken uses the contract's ether balance to track the totalSupply of the token. 
 
 
 
-[packages/contracts/src/2.0.0/tokens/EtherToken/WETH9.sol:L46](https://github.com/ConsenSys/0x_audit_2018-07-23/blob/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/tokens/EtherToken/WETH9.sol#L47)
+[packages/contracts/src/2.0.0/tokens/EtherToken/WETH9.sol:L46-L48](https://github.com/ConsenSys/0x_audit_2018-07-23/blob/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/tokens/EtherToken/WETH9.sol#L47-L49)
 
 ```Solidity
     function totalSupply() public view returns (uint) {
+        return this.balance;
+    }
 ```
 
-L49
 
-## Recommendation
+
+#### Recommendation
 
 This saves gas by not having to track a `totalSupply` storage value with each deposit and withdrawal. However this `totalSupply` value need not be equal to the sum of all account balances in the contract. This may lead to unforeseen issues with other contracts calling on the `totalSupply()` function. We leave it to the developer to consider if this is an acceptable trade off. 
 
-### 3.17 ERC20Proxy: Reconsider use of inline assembly 
+### 3.19 ERC20Proxy: Reconsider use of inline assembly 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/36](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/36)| The issue is currently under review |
 
 
-### Description
+#### Description
 
 The ERC20Proxy fallback function is written entirely in inline assembly. The rationale given was to optimize gas costs caused by unnecessary ABI encoding/decoding. In general, inline assembly is concerning from a security perspective because it bypasses compiler checks and inhibits human code reasoning.
 
-### Remediation 
+#### Remediation 
 
 Consider minimizing the amount of inline assembly used. For example, the function selector check and the `authorized` map check on lines 37-61 likely do not need to be written in assembly from a gas savings standpoint.
 
-### 3.18 ERC20Proxy: Unclear comments 
+### 3.20 ERC20Proxy: Unclear comments 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/35](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/35)| The issue is currently under review |
 
 
-### Description 
+#### Description 
 
 The following comment in ERC20Proxy is confusing to follow and can be written more clearly. For example, what does "It" refer to and what does "Params" refer to?
 ```
@@ -599,29 +609,29 @@ The following comment in ERC20Proxy is confusing to follow and can be written mo
             // So we read location 4 and add 32 + 4 + 4 to it.
 ```
 
-### 3.19 ERC20Proxy/ERC721Proxy: LibBytes imported but not used 
+### 3.21 ERC20Proxy/ERC721Proxy: LibBytes imported but not used 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/33](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/33)| The issue is currently under review |
 
 
-### Description 
+#### Description 
 
 LibBytes is imported by ERC20Proxy.sol but never used.
 
-### Remediation
+#### Remediation
 
 Remove the import.
 
-### 3.20 LibBytes is imported but never used 
+### 3.22 LibBytes is imported but never used 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/27](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/27)| The issue is currently under review |
 
 
-## Description
+#### Description
 
 This line appears to be unnecessary. The contract compiles without it, and I cannot see where it would be used. 
 
@@ -635,18 +645,18 @@ This line appears to be unnecessary. The contract compiles without it, and I can
 
 
 
-## Recommendation
+#### Recommendation
 
 Remove it. 
 
-### 3.21 Optimization: refine function visibilities in the Exchange for gas efficiency 
+### 3.23 Optimization: refine function visibilities in the Exchange for gas efficiency 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
 | <img height="30px" src="static-content/minor.png"/> |  <img height="30px" src="static-content/open.png"/> | [ issues/26](https://github.com/ConsenSys/0x_audit_2018-07-23/issues/26)| The issue is currently under review |
 
 
-## Description
+#### Description
 
 The `fillOrder()` function is labelled `public` because it is intended to be called either by external accounts, or from other 'wrapper' functions such as `fillOrKillOrder()`, and `batchFillOrders()`.
 
@@ -654,7 +664,7 @@ Relative to `external` and `internal` functions, the `public` keyword is gas ine
 
 Functions labelled `public` require extra code to handle both cases. 
 
-## Remediation
+#### Remediation
 
 Given the sensitivity to gas costs in this system, it would be more efficient to move the code of `fillOrder()` to an internal function (ie. `internalFillOrder()` which is called by the wrapper functions as well as `fillOrder()`.
 
@@ -662,7 +672,7 @@ Additionally, it would be more efficient to change visibility of wrapper functio
 
 I have confirmed small gas savings in principle with very simple code samples, but have not yet tested in the Exchange itself. Given the number and size of arguments required to complete an order I expect they would be non-trivial.
 
-### 3.22 LibConstants: dynamic constructor initialisation 
+### 3.24 LibConstants: dynamic constructor initialisation 
 
 | Severity  | Status | Link | Remediation Comment |
 | ------------- | ------------- | ------------- | ------------- |
@@ -694,7 +704,7 @@ Build in a fail safe that throws if the contracts are deployed on the mainnet wi
 
 ```Solidity 
 require(block.number <  6019600)
-````
+```
 
 
 
@@ -703,51 +713,63 @@ require(block.number <  6019600)
 
 The creation of a Threat Model is beneficial when building smart contract systems as it helps to understand the potential security threats, assess risk, and identify appropriate mitigation strategies. This is especially useful during the design and development of a contract system as it allows to create a more resilient design which is more difficult to change post-development. 
 
-A Threat Model was created during the audit process in order to analyze the attack surface of the contract system and to focus review and testing efforts on key areas that a malicious actor would likely also attack. It consists of two parts a high level design diagram that help to understand the attack surface and a list of threats that exist for the contract system. 
+A Threat Model was created during the audit in order to analyze the attack surface of the contract system and to focus review and testing efforts on key areas that a malicious actor would likely also attack. It consists of two parts a high level design diagram that help to understand the attack surface and a list of threats that exist for the contract system. 
 
-The 0x contract system enables a fairly flexibel DEX protocol that allows for several variants on how relayers and traders can interact with the system. The following Threat Model is an abstraction of the current system and has been compiled based on architecture and design specifictions. It does not claim completeness and can be considered as a complementary analysis type to the manual code review and automated tool analysis. 
+The 0x contract system enables a fairly flexible DEX protocol that allows for several variants on how relayers and traders can interact with the system. The following Threat Model is an abstraction of the current system and has been compiled based on architecture and design specifications. It does not claim completeness and can be considered as a complementary analysis type to the manual code review and automated tool analysis. 
 
+### 4.1 Overview 
+
+The scope of the Threat Model is to analyze the 0x protocol based on the two primary relayer strategies Open Orderbook and Matcher. Other strategies such as the Quote Provider and the Reserve Manager have been considered for the analysis yet they do not have significantly different security properties than the primary relayer strategies. 
+
+
+**Open Orderbook**
+
+<img src="static-content-project-specific/0x_relayer_openorderbook.png"/> 
+
+**Matcher**
+
+<img src="static-content-project-specific/0x_relayer_matcher.png"/> 
 
 **System components:**
 
-More information on system components can be found in chapter [1.3 System Overview](#13-system-overview).
+The 0x system has multiple components that are either deployed and maintained by 0x or by a third parties. 
 
-* Forwarder 
-* Exchange 
-* Asset Proxy 
+* Exchange: See chapter [1.3 System Overview](#13-system-overview) 
+* Asset Proxy: See chapter [1.3 System Overview](#13-system-overview) 
+* ERC20/ERC721 contracts: hold the token balance.
+* Relayer infrastructure: this can be a composed of centralized and decentralized components.  
 
 
 **Assets:**
 
-Assets need to be protected as potential threats could materialize in partial or full loss of: 
+Assets need to be protected as potential threats could materialize in considerable loss for the Actors in the system.
 
 * ERC20/ERC721 tokens: owned by Traders and Relayers 
-* Private keys:  
+* Exchange/Proxy Owner private keys: tied to a Gnosis MultiSig wallet   
 
 **Actors:**
 
 Actors that take part in the 0x protocol:
 
 * Maker: creates and signs an order to trade token A for token B 
-* Taker: intends to fill an order through the Exchange and trade token B for token A  
+* Taker: takes an order and trade token B for token A  
 * Trader: Maker or Taker
 * Relayer Owner: aggregate orders, provide liquidity and take part in trades as a Maker or Taker 
 * Exchange/Proxy Owner: add and remove authorities to the Asset Proxy and register and unregister an Asset Proxy in the Exchange 
 * Miners: include order processing and settlement transactions in new blocks 
 
 
-### 4.1 Open Orderbook 
+### 4.2 Threat Analysis 
 
-|  Threat | Commit hash | Commit date |
-|----------|-------------|-------------|
-| Traders trust the Exchange Owner with their tokens when they approve the Exchange Proxy to settle trades on their behalf. If the Exchange/Proxy Owner gets hacked or misappropriates their funds  Traders could lose all of their ERC20/ERC721 tokens that they have approved for the Exchange Proxy.
+The following table contains a list of identified threats that exist in the 0x protocol
 
-<img src="static-content-project-specific/0x_relayer_openorderbook.png"/> 
-
-### 4.2 Matcher 
-
-<img src="static-content-project-specific/0x_relayer_matcher.png"/> 
-
+|  Threat | Relayer Strategy | Mitigation | 
+|-------------|-------------|-------------|
+| The Exchange/Proxy Owner gets hacked and the private keys get exposed. The Traders and Relayers could lose all of their ERC20/ERC721 tokens that they have approved. | Open Orderbook, Matcher | A newly added AssetProxyOwner has a two weeks time-lock for approving new transactions. It gives Traders and Relayers the chance to remove their allowances in case an untrusted address is authorized within an AssetProxy. |
+| The Exchange/Proxy Owner makes unauthorized transfers and misappropriates the assets. The Traders and Relayers could lose all of their ERC20/ERC721 tokens that they have approved. | Open Orderbook, Matcher | At least the majority of the AssetProxyOwners need to collude in order to add a new AssetProxy |
+| Miners and other Traders could front-run any order that have no Taker specified.  | Open Orderbook | Traders can choose a relayer with a Matcher strategy to prevent front-running attacks. Traders need to trust the chosen Relayers to match orders fairly.|
+| Relayers could front-run orders that have no Taker specified. | Matcher | Traders can chose a Relayer that uses an Open Orderbook strategy |
+| Relayers could censor orders and prevent Traders from participating | Matcher | Traders can switch to other Relayers |
 
 
 ## 5 Tool based analysis 

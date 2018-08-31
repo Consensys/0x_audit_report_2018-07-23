@@ -69,7 +69,7 @@ The audit focus was on the smart contract files, and test suites found in the fo
 
 #### Architecture 
 
-The 0x audit scope does not include all of the components that can be found in a complete deployment. The Multi-Sig wallet and the token related contracts are out of scope. The in-scope items can be divided into the following three distinct parts:
+The 0x audit scope does not include all of the components that can be found in a complete deployment. The MultiSig wallet and the token related contracts are out of scope. The in-scope items can be divided into the following three distinct parts:
 
 * **Exchange:** The Exchange contracts contain the bulk of the business logic within 0x protocol. It is the entry point for filling orders, cancelling orders, executing transactions, validating signatures and registering new ERC Proxy contracts into the system.
 * **Asset Proxy:** is responsible for decoding asset specific metadata contained within an order, performing the actual asset transfer and authorizing/unauthorizing Exchange contract addresses from calling the transfer methods.
@@ -119,51 +119,63 @@ The following table contains all the issues discovered during the audit. The iss
 
 The creation of a Threat Model is beneficial when building smart contract systems as it helps to understand the potential security threats, assess risk, and identify appropriate mitigation strategies. This is especially useful during the design and development of a contract system as it allows to create a more resilient design which is more difficult to change post-development. 
 
-A Threat Model was created during the audit process in order to analyze the attack surface of the contract system and to focus review and testing efforts on key areas that a malicious actor would likely also attack. It consists of two parts a high level design diagram that help to understand the attack surface and a list of threats that exist for the contract system. 
+A Threat Model was created during the audit in order to analyze the attack surface of the contract system and to focus review and testing efforts on key areas that a malicious actor would likely also attack. It consists of two parts a high level design diagram that help to understand the attack surface and a list of threats that exist for the contract system. 
 
-The 0x contract system enables a fairly flexibel DEX protocol that allows for several variants on how relayers and traders can interact with the system. The following Threat Model is an abstraction of the current system and has been compiled based on architecture and design specifictions. It does not claim completeness and can be considered as a complementary analysis type to the manual code review and automated tool analysis. 
+The 0x contract system enables a fairly flexible DEX protocol that allows for several variants on how relayers and traders can interact with the system. The following Threat Model is an abstraction of the current system and has been compiled based on architecture and design specifications. It does not claim completeness and can be considered as a complementary analysis type to the manual code review and automated tool analysis. 
 
+### 4.1 Overview 
+
+The scope of the Threat Model is to analyze the 0x protocol based on the two primary relayer strategies Open Orderbook and Matcher. Other strategies such as the Quote Provider and the Reserve Manager have been considered for the analysis yet they do not have significantly different security properties than the primary relayer strategies. 
+
+
+**Open Orderbook**
+
+<img src="static-content-project-specific/0x_relayer_openorderbook.png"/> 
+
+**Matcher**
+
+<img src="static-content-project-specific/0x_relayer_matcher.png"/> 
 
 **System components:**
 
-More information on system components can be found in chapter [1.3 System Overview](#13-system-overview).
+The 0x system has multiple components that are either deployed and maintained by 0x or by a third parties. 
 
-* Forwarder 
-* Exchange 
-* Asset Proxy 
+* Exchange: See chapter [1.3 System Overview](#13-system-overview) 
+* Asset Proxy: See chapter [1.3 System Overview](#13-system-overview) 
+* ERC20/ERC721 contracts: hold the token balance.
+* Relayer infrastructure: this can be a composed of centralized and decentralized components.  
 
 
 **Assets:**
 
-Assets need to be protected as potential threats could materialize in partial or full loss of: 
+Assets need to be protected as potential threats could materialize in considerable loss for the Actors in the system.
 
 * ERC20/ERC721 tokens: owned by Traders and Relayers 
-* Private keys:  
+* Exchange/Proxy Owner private keys: tied to a Gnosis MultiSig wallet   
 
 **Actors:**
 
 Actors that take part in the 0x protocol:
 
 * Maker: creates and signs an order to trade token A for token B 
-* Taker: intends to fill an order through the Exchange and trade token B for token A  
+* Taker: takes an order and trade token B for token A  
 * Trader: Maker or Taker
 * Relayer Owner: aggregate orders, provide liquidity and take part in trades as a Maker or Taker 
 * Exchange/Proxy Owner: add and remove authorities to the Asset Proxy and register and unregister an Asset Proxy in the Exchange 
 * Miners: include order processing and settlement transactions in new blocks 
 
 
-### 4.1 Open Orderbook 
+### 4.2 Threat Analysis 
 
-|  Threat | Commit hash | Commit date |
-|----------|-------------|-------------|
-| Traders trust the Exchange Owner with their tokens when they approve the Exchange Proxy to settle trades on their behalf. If the Exchange/Proxy Owner gets hacked or misappropriates their funds  Traders could lose all of their ERC20/ERC721 tokens that they have approved for the Exchange Proxy.
+The following table contains a list of identified threats that exist in the 0x protocol
 
-<img src="static-content-project-specific/0x_relayer_openorderbook.png"/> 
-
-### 4.2 Matcher 
-
-<img src="static-content-project-specific/0x_relayer_matcher.png"/> 
-
+|  Threat | Relayer Strategy | Mitigation | 
+|-------------|-------------|-------------|
+| The Exchange/Proxy Owner gets hacked and the private keys get exposed. The Traders and Relayers could lose all of their ERC20/ERC721 tokens that they have approved. | Open Orderbook, Matcher | A newly added AssetProxyOwner has a two weeks time-lock for approving new transactions. It gives Traders and Relayers the chance to remove their allowances in case an untrusted address is authorized within an AssetProxy. |
+| The Exchange/Proxy Owner makes unauthorized transfers and misappropriates the assets. The Traders and Relayers could lose all of their ERC20/ERC721 tokens that they have approved. | Open Orderbook, Matcher | At least the majority of the AssetProxyOwners need to collude in order to add a new AssetProxy |
+| Miners and other Traders could front-run any order that have no Taker specified.  | Open Orderbook | Traders can choose a relayer with a Matcher strategy to prevent front-running attacks. Traders need to trust the chosen Relayers to match orders fairly.|
+| Relayers could front-run orders that have no Taker specified. | Matcher | Traders can chose a Relayer that uses an Open Orderbook strategy |
+| Relayers could censor orders and prevent Traders from participating | Matcher | Traders can switch to other Relayers |
 
 
 ## 5 Tool based analysis 
