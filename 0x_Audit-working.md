@@ -56,16 +56,16 @@ The following documentation was available to the audit team:
 
 * The [Wiki](https://0xproject.com/wiki#) high level information on the 0x system contract system.
 * The [Version 2 specifications](https://github.com/0xProject/0x-protocol-specification/blob/master/v2/v2-specification.md) detailed specifications of the entire contract system.
-* Technical challenges around DEX and how 0x is designed to overcome them [1](https://blog.0xproject.com/front-running-griefing-and-the-perils-of-virtual-settlement-part-1-8554ab283e97) and [2](https://blog.0xproject.com/front-running-griefing-and-the-perils-of-virtual-settlement-part-2-921b00109e21).
+* Technical challenges around DEX design and how 0x is designed to overcome them [1](https://blog.0xproject.com/front-running-griefing-and-the-perils-of-virtual-settlement-part-1-8554ab283e97) and [2](https://blog.0xproject.com/front-running-griefing-and-the-perils-of-virtual-settlement-part-2-921b00109e21).
 
 
 #### Scope
 
-The audit focus was on the smart contract files, and test suites found in the following directories of the [0x-monorepo](https://github.com/0xProject/0x-monorepo/tree/v2-prototype) repository: 
+The audit focus was on the smart contract files, and test suites found in the following directories of the [0x-monorepo](https://github.com/0xProject/0x-monorepo/commit/a05b14e4d9659be1cc495ee33fd8962ce773f87f) repository: 
 
 |  Directory | Commit hash | Commit date |
 |----------|-------------|-------------|
-| [packages/contracts/src/2.0.0/forwarder](https://github.com/0xProject/0x-monorepo/tree/v2-prototype/packages/contracts/src/2.0.0/forwarder) [packages/contracts/src/2.0.0/protocol](https://github.com/0xProject/0x-monorepo/tree/v2-prototype/packages/contracts/src/2.0.0/protocol) [packages/contracts/src/2.0.0/utils](https://github.com/0xProject/0x-monorepo/tree/v2-prototype/packages/contracts/src/2.0.0/utils)  | a05b14e4d9659be1cc495ee33fd8962ce773f87f          | 23rd July 2018| 
+| [packages/contracts/src/2.0.0/forwarder](https://github.com/0xProject/0x-monorepo/commit/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/forwarder) [packages/contracts/src/2.0.0/protocol](https://github.com/0xProject/0x-monorepo/commit/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/protocol) [packages/contracts/src/2.0.0/utils](https://github.com/0xProject/0x-monorepo/commit/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/utils)  | a05b14e4d9659be1cc495ee33fd8962ce773f87f          | 23rd July 2018| 
 
 #### Architecture 
 
@@ -78,33 +78,31 @@ The 0x audit scope does not include all of the components that can be found in a
 <img src="static-content-project-specific/0x_contract_high_level.png"/> 
 
   
-### 1.4 Key Observations/Recommendations  
+### 1.4 Key Observations
 
-<!-- Positive Observations: Examples 
-*  The design of the system is well documented
-*  The code contains many helpful comments
-*  The library architecture is efficient, and innovative
--->
+We found the quality of the codebase to be very high, which is particularly appreciated when approaching a complex protocol. In particular: 
 
-<!-- Recommendations: Examples
+* The specification documents are thorough, and well written. The diagrams of the system's interactions help to visualize the system. 
+* The code is well commented, particularly in sections where it is most needed to understand the developer's intent.
+* The organization of the contract repository is thoughtful and consistent. For example, the names of Solidity `contract`s which are inherited but not deployed are differentiated with the prefix `Mixin_`. Interfaces are prefixed with `M_`.
 
-* **Test coverage is incomplete:** Any contract system that is used on the main net should have as a minimum requirement a 100% test coverage.
-* **Include negative test cases:** The majority of the tests are positive test cases, meaning that the tests confirm that the system works with an expected sequence of actions and inputs. The test suite should be expanded to include more negative scenarios to ensure that the safe checks within the contract system are working correctly.  
-* **High Complexity:** The multiple library/contract system is complex in nature. Additional complexity is added by having ... 
-* **Stages/Time periods:**  The stages and various timings should be defined more clearly in separated control functions. Any state changing function that is called should check first against those control functions and check if it is allowed to be executed. 
-* **Function visibility:** Best practices such as explicitly specifying function visibility should be followed.
-* **Improve Documentation:** Inconsistencies exist between the white paper/documentation and implementation.  
-* 
--->
+Relative to the v1 version of the system, the v2 updates introduce features which significantly improve the user experience, but also introduce many new edge cases, which directly resulted in some critical issues. These features include:
+
+* Support for multiple `SignatureType`s, especially `Caller`, which was unique in not using the `orderHash` to verify an order, thus making it independent of the order's properties. See section 3.2 for more information on the resulting issue. 
+* Enabling a 3rd party to call Exchange functions on behalf of a user. See section 3.1 for the resulting issue, and remediations.
+* The generally high level of complexity, and possibly execution paths, make it difficult to test all possible edge cases. A number of untested behaviours were identified.
+
+
+### 1.5 Recommendations  
 
 * **Test coverage is incomplete:** Any contract system that is used on the main net should have as a minimum requirement a 100% test coverage.
 
-* **Fix all issues:** It is recommended to fix all the issues listed in the below chapters, at the very least the ones with severity Critical, Major and Medium. All issues have also been created in a separate [audit respoitory](https://github.com/ConsenSys/0x_audit_2018-07-23/).
+* **Fix all issues:** We recommend addressing all the issues listed in the sections below, at the very least the ones with severity Critical, Major and Medium. All issues have also been created in a separate [audit repository](https://github.com/ConsenSys/0x_audit_2018-07-23/).
 
 
 ## 2 Issue Overview  
 
-The following table contains all the issues discovered during the audit. The issues are ordered based on their severity. More detailed description on the  levels of severity can be found in Appendix 2. The table also contains the Github status of any discovered issue.
+The following table contains all the issues discovered during the audit. The issues are ordered based on their severity. More detailed description on the levels of severity can be found in Appendix 2. The table also contains the Github status of any discovered issue.
 
 <%= issue_list %>
 
