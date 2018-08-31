@@ -1,4 +1,4 @@
-# 0x v2.0 Audit
+# 0x v2.0 Audit -- Initial Report
 
 
 <img height="120px" Hspace="30" Vspace="10" align="right" src="static-content/diligence.png"/> 
@@ -7,9 +7,13 @@
 <!--59bcc3ad6775562f845953cf01624225-->
 <!-- Don't remove this -->
 
-## 1 Summary
+## 1 Introduction
 
-From July 23, 2018 to September 10, 2018 ConsenSys Diligence conducted a security audit of the 0x Project's [second major iteration](https://github.com/ConsenSys/0x_audit_2018-07-23) of their contract system. The findings and recommendations are presented here in this report.
+<img height="120px" Hspace="30" Vspace="10" align="right" src="static-content-project-specific/0x_icon.png"/> 
+
+From July 23, 2018 to September 10, 2018 ConsenSys Diligence conducted a security audit of the 0x Project's [second major iteration](https://github.com/ConsenSys/0x_audit_2018-07-23) of their contract system. The findings and recommendations are presented here in this initial report.
+
+**NOTE:** The 0x team's Mitigations of the audit findings are currently being reviewed by our team. A final version of this report will be released on or before September 10th, 2018. 
 
 ### 1.1 Audit Dashboard
 
@@ -65,7 +69,8 @@ The audit focus was on the smart contract files, and test suites found in the fo
 
 |  Directory | Commit hash | Commit date |
 |----------|-------------|-------------|
-| [packages/contracts/src/2.0.0/forwarder](https://github.com/0xProject/0x-monorepo/commit/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/forwarder) [packages/contracts/src/2.0.0/protocol](https://github.com/0xProject/0x-monorepo/commit/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/protocol) [packages/contracts/src/2.0.0/utils](https://github.com/0xProject/0x-monorepo/commit/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/utils)  | a05b14e4d9659be1cc495ee33fd8962ce773f87f          | 23rd July 2018| 
+| [packages/contracts/src/2.0.0/forwarder](https://github.com/0xProject/0x-monorepo/commit/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/forwarder)<br/> [packages/contracts/src/2.0.0/protocol](https://github.com/0xProject/0x-monorepo/commit/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/protocol)<br/> [packages/contracts/src/2.0.0/utils](https://github.com/0xProject/0x-monorepo/commit/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/utils)  | a05b14e4d9659be1cc495ee33fd8962ce773f87f          | 23rd July 2018| 
+
 
 #### Architecture 
 
@@ -123,44 +128,44 @@ The 0x contract system enables a fairly flexible DEX protocol that allows for se
 
 ### 4.1 Overview 
 
-The scope of the Threat Model is to analyze the 0x protocol based on the two primary relayer strategies Open Orderbook and Matcher. Other strategies such as the Quote Provider and the Reserve Manager have been considered for the analysis yet they do not have significantly different security properties than the primary relayer strategies. 
+The scope of the Threat Model is to analyze the 0x protocol based on the two primary relayer strategies "Open Orderbook" and "Matcher". Other strategies such as the "Quote Provider" and the "Reserve Manager" have been considered for the analysis yet they do not have significantly different security properties than the primary relayer strategies. 
 
 
-**Open Orderbook**
+#### Open Orderbook
 
 <img src="static-content-project-specific/0x_relayer_openorderbook.png"/> 
 
-**Matcher**
+#### Matcher
 
 <img src="static-content-project-specific/0x_relayer_matcher.png"/> 
 
-**System components:**
+#### System components
 
-The 0x system has multiple components that are either deployed and maintained by 0x or by a third parties. 
+The 0x system has multiple components that are either deployed and maintained by 0x or by a third party. 
 
-* Exchange: See chapter [1.3 System Overview](#13-system-overview) 
-* Asset Proxy: See chapter [1.3 System Overview](#13-system-overview) 
-* ERC20/ERC721 contracts: hold the token balance.
-* Relayer infrastructure: this can be a composed of centralized and decentralized components.  
+* **Exchange**: See chapter [1.3 System Overview](#13-system-overview) 
+* **Asset Proxy**: See chapter [1.3 System Overview](#13-system-overview) 
+* **ERC20/ERC721 contracts**: hold the token balance.
+* **Relayer infrastructure**: this can be a composed of centralized and decentralized components.  
 
 
-**Assets:**
+#### Assets
 
-Assets need to be protected as potential threats could materialize in considerable loss for the Actors in the system.
+Assets need to be protected as potential threats could result in considerable loss for Actors in the system.
 
-* ERC20/ERC721 tokens: owned by Traders and Relayers 
-* Exchange/Proxy Owner private keys: tied to a Gnosis MultiSig wallet   
+* **ERC20/ERC721 tokens**: owned by Traders and Relayers 
+* **Exchange/Proxy Owner accounts**: tied to a Gnosis MultiSig wallet   
 
-**Actors:**
+#### Actors
 
 Actors that take part in the 0x protocol:
 
-* Maker: creates and signs an order to trade token A for token B 
-* Taker: takes an order and trade token B for token A  
-* Trader: Maker or Taker
-* Relayer Owner: aggregate orders, provide liquidity and take part in trades as a Maker or Taker 
-* Exchange/Proxy Owner: add and remove authorities to the Asset Proxy and register and unregister an Asset Proxy in the Exchange 
-* Miners: include order processing and settlement transactions in new blocks 
+* **Maker**: creates and signs an order to trade token A for token B 
+* **Taker**: takes an order and trade token B for token A  
+* **Trader**: Maker or Taker
+* **Relayer** Owner: aggregate orders, provide liquidity and take part in trades as a Maker or Taker 
+* **Exchange/Proxy Owner**: add and remove authorities to the Asset Proxy and register and unregister an Asset Proxy in the Exchange 
+* **Miners**: include order processing and settlement transactions in new blocks 
 
 
 ### 4.2 Threat Analysis 
@@ -169,10 +174,10 @@ The following table contains a list of identified threats that exist in the 0x p
 
 |  Threat | Relayer Strategy | Mitigation | 
 |-------------|-------------|-------------|
-| The Exchange/Proxy Owner gets hacked and the private keys get exposed. The Traders and Relayers could lose all of their ERC20/ERC721 tokens that they have approved. | Open Orderbook, Matcher | A newly added AssetProxyOwner has a two weeks time-lock for approving new transactions. It gives Traders and Relayers the chance to remove their allowances in case an untrusted address is authorized within an AssetProxy. |
+| The Exchange/Proxy Owner gets hacked and the private keys get exposed. The Traders and Relayers could lose all of the ERC20/ERC721 tokens that they have approved. | Open Orderbook, Matcher | A newly added AssetProxyOwner has a two weeks time-lock for approving new transactions. It gives Traders and Relayers the chance to remove their allowances in case an untrusted address is authorized within an AssetProxy. |
 | The Exchange/Proxy Owner makes unauthorized transfers and misappropriates the assets. The Traders and Relayers could lose all of their ERC20/ERC721 tokens that they have approved. | Open Orderbook, Matcher | At least the majority of the AssetProxyOwners need to collude in order to add a new AssetProxy |
-| Miners and other Traders could front-run any order that have no Taker specified.  | Open Orderbook | Traders can choose a relayer with a Matcher strategy to prevent front-running attacks. Traders need to trust the chosen Relayers to match orders fairly.|
-| Relayers could front-run orders that have no Taker specified. | Matcher | Traders can chose a Relayer that uses an Open Orderbook strategy |
+| Miners and other Traders could front-run any orders that have no Taker specified.  | Open Orderbook | Traders can choose a relayer with a Matcher strategy to prevent front-running attacks. Traders need to trust the chosen Relayers to match orders fairly.|
+| Relayers could front-run orders that have no Taker specified. | Matcher | Traders can choose a Relayer that uses an Open Orderbook strategy |
 | Relayers could censor orders and prevent Traders from participating | Matcher | Traders can switch to other Relayers |
 
 
@@ -210,20 +215,15 @@ Odyssey is an audit tool that acts as the glue between developers, auditors and 
 In its current version Odyssey helps to better communicate audit issues to development teams and to successfully close them.
 
 
-
 ## 6 Test Coverage Measurement
 
-<!-- 
-
-Testing is implemented using the YYY. XXX tests are included in the test suite and they all pass.
+Testing is implemented using the 0x project's own typescript based tooling. XXX tests are included in the test suite and they all pass.
 
 The [Solidity-Coverage](https://github.com/sc-forks/solidity-coverage) tool was used to measure the portion of the code base exercised by the test suite, and identify areas with little or no coverage. Specific sections of the code where necessary test coverage is missing are included in chapter 3 - Issues.
 
 It's important to note that "100% test coverage" is not a silver bullet. Our review also included a inspection of the test suite, to ensure that testing included important edge cases.
 
 The state of test coverage at the time of our review can be viewed in html rendered from the Github repo, or by opening the `index.html` file from the [coverage report](...) directory in a browser.
-
--->
 
 
 ## Appendix 1 - File Hashes
