@@ -177,8 +177,8 @@ The following table contains a list of identified threats that exist in the 0x p
 | The Exchange/Proxy Owner gets hacked and the private keys get exposed. The Traders and Relayers could lose all of their ERC20/ERC721 tokens that they have approved. | Open Orderbook, Matcher | A newly added AssetProxyOwner has a two weeks time-lock for approving new transactions. It gives Traders and Relayers the chance to remove their allowances in case an untrusted address is authorized for an AssetProxy. |
 | The Exchange/Proxy Owner makes unauthorized transfers and misappropriates assets. The Traders and Relayers could lose all of their ERC20/ERC721 tokens that they have approved. | Open Orderbook, Matcher | At least the majority of the AssetProxyOwners need to collude in order to add a new AssetProxy. Currently 2 out of 3 AssetProxyOwners can authorize such an action. It is planned to increase the number of AssetProxyOwners to 6 where it takes at least 4 to authorize an action.  |
 | Miners and other Traders could front-run any orders that have no Taker specified.  | Open Orderbook | Traders can set a Taker and choose for instance a relayer with a Matcher strategy to prevent front-running attacks. Traders need to trust the chosen Relayers to match orders fairly.|
-| Relayers could front-run orders that have them as a Taker specified. | Matcher | Traders can choose a Relayer that uses an Open Orderbook strategy or choose other Relayers that are more trusted |
-| Relayers could censor orders and prevent Traders from participating | Matcher | Traders can switch to other Relayers |
+| Relayers could front-run orders that have them as a Taker specified. | Matcher | Traders can choose a Relayer that uses an Open Orderbook strategy or choose other Relayers that are more trusted. |
+| Relayers could censor orders and prevent Traders from participating | Matcher | Traders can switch to other Relayers. |
 
 
 ## 5 Tool based analysis 
