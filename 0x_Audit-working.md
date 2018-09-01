@@ -74,9 +74,9 @@ The audit focus was on the smart contract files, and test suites found in the fo
 
 #### Architecture 
 
-The 0x audit scope does not include all of the components that can be found in a complete deployment. The MultiSig wallet and the token related contracts are out of scope. The in-scope items can be divided into the following three distinct parts:
+The 0x audit scope does not include all of the components that can be found in a complete deployment. The token related contracts are out of scope. The in-scope items can be divided into the following three distinct parts:
 
-* **Exchange:** The Exchange contracts contain the bulk of the business logic within 0x protocol. It is the entry point for filling orders, cancelling orders, executing transactions, validating signatures and registering new ERC Proxy contracts into the system.
+* **Exchange:** The Exchange contracts contain the bulk of the business logic within 0x protocol. It is the entry point for filling orders, canceling orders, executing transactions, validating signatures and registering new ERC Proxy contracts into the system.
 * **Asset Proxy:** is responsible for decoding asset specific metadata contained within an order, performing the actual asset transfer and authorizing/unauthorizing Exchange contract addresses from calling the transfer methods.
 * **Forwarder:** enables users to buy assets (ERC20 or ERC721 tokens) with ETH. It removes the required knowledge of WETH and allowances. 
 
@@ -85,7 +85,7 @@ The 0x audit scope does not include all of the components that can be found in a
   
 ### 1.4 Key Observations
 
-We found the quality of the codebase to be very high, which is particularly appreciated when approaching a complex protocol. In particular: 
+We found the quality of the code base to be very high, which is particularly appreciated when approaching a complex protocol. In particular: 
 
 * The specification documents are thorough, and well written. The diagrams of the system's interactions help to visualize the system. 
 * The code is well commented, particularly in sections where it is most needed to understand the developer's intent.
@@ -95,7 +95,7 @@ Relative to the v1 version of the system, the v2 updates introduce features whic
 
 * Support for multiple `SignatureType`s, especially `Caller`, which was unique in not using the `orderHash` to verify an order, thus making it independent of the order's properties. See section 3.2 for more information on the resulting issue. 
 * Enabling a 3rd party to call Exchange functions on behalf of a user. See section 3.1 for the resulting issue, and remediations.
-* The generally high level of complexity, and possibly execution paths, make it difficult to test all possible edge cases. A number of untested behaviours were identified.
+* The generally high level of complexity, and possibly execution paths, make it difficult to test all possible edge cases. A number of untested behaviors were identified.
 
 
 ### 1.5 Recommendations  
@@ -107,7 +107,7 @@ Relative to the v1 version of the system, the v2 updates introduce features whic
 
 ## 2 Issue Overview  
 
-The following table contains all the issues discovered during the audit. The issues are ordered based on their severity. More detailed description on the levels of severity can be found in Appendix 2. The table also contains the Github status of any discovered issue.
+The following table contains all the issues discovered during the audit. The issues are ordered based on their severity. More detailed description on the levels of severity can be found in Appendix 2. The table also contains the Github status of the discovered issues.
 
 <%= issue_list %>
 
@@ -145,8 +145,8 @@ The 0x system has multiple components that are either deployed and maintained by
 
 * **Exchange**: See chapter [1.3 System Overview](#13-system-overview) 
 * **Asset Proxy**: See chapter [1.3 System Overview](#13-system-overview) 
-* **ERC20/ERC721 contracts**: hold the token balance.
-* **Relayer infrastructure**: this can be a composed of centralized and decentralized components.  
+* **ERC20/ERC721 contracts**: hold the token balance
+* **Relayer infrastructure**: can be a composed of centralized and decentralized components  
 
 
 #### Assets
@@ -163,21 +163,21 @@ Actors that take part in the 0x protocol:
 * **Maker**: creates and signs an order to trade token A for token B 
 * **Taker**: takes an order and trade token B for token A  
 * **Trader**: Maker or Taker
-* **Relayer** Owner: aggregate orders, provide liquidity and take part in trades as a Maker or Taker 
-* **Exchange/Proxy Owner**: add and remove authorities to the Asset Proxy and register and unregister an Asset Proxy in the Exchange 
+* **Relayer Owner**: aggregate orders, provide liquidity and take part in trades as a Maker or Taker 
+* **Exchange/Proxy Owner (or AssetProxyOwner)**: add and remove authorities to the Asset Proxy and register and unregister an Asset Proxy in the Exchange 
 * **Miners**: include order processing and settlement transactions in new blocks 
 
 
 ### 4.2 Threat Analysis 
 
-The following table contains a list of identified threats that exist in the 0x protocol
+The following table contains a list of identified threats that exist in the 0x protocol.
 
 |  Threat | Relayer Strategy | Mitigation | 
 |-------------|-------------|-------------|
-| The Exchange/Proxy Owner gets hacked and the private keys get exposed. The Traders and Relayers could lose all of the ERC20/ERC721 tokens that they have approved. | Open Orderbook, Matcher | A newly added AssetProxyOwner has a two weeks time-lock for approving new transactions. It gives Traders and Relayers the chance to remove their allowances in case an untrusted address is authorized within an AssetProxy. |
-| The Exchange/Proxy Owner makes unauthorized transfers and misappropriates the assets. The Traders and Relayers could lose all of their ERC20/ERC721 tokens that they have approved. | Open Orderbook, Matcher | At least the majority of the AssetProxyOwners need to collude in order to add a new AssetProxy |
-| Miners and other Traders could front-run any orders that have no Taker specified.  | Open Orderbook | Traders can choose a relayer with a Matcher strategy to prevent front-running attacks. Traders need to trust the chosen Relayers to match orders fairly.|
-| Relayers could front-run orders that have no Taker specified. | Matcher | Traders can choose a Relayer that uses an Open Orderbook strategy |
+| The Exchange/Proxy Owner gets hacked and the private keys get exposed. The Traders and Relayers could lose all of their ERC20/ERC721 tokens that they have approved. | Open Orderbook, Matcher | A newly added AssetProxyOwner has a two weeks time-lock for approving new transactions. It gives Traders and Relayers the chance to remove their allowances in case an untrusted address is authorized for an AssetProxy. |
+| The Exchange/Proxy Owner makes unauthorized transfers and misappropriates assets. The Traders and Relayers could lose all of their ERC20/ERC721 tokens that they have approved. | Open Orderbook, Matcher | At least the majority of the AssetProxyOwners need to collude in order to add a new AssetProxy. Currently 2 out of 3 AssetProxyOwners can authorize such an action. It is planned to increase the number of AssetProxyOwners to 6 where it takes at least 4 to authorize an action.  |
+| Miners and other Traders could front-run any orders that have no Taker specified.  | Open Orderbook | Traders can set a Taker and choose for instance a relayer with a Matcher strategy to prevent front-running attacks. Traders need to trust the chosen Relayers to match orders fairly.|
+| Relayers could front-run orders that have them as a Taker specified. | Matcher | Traders can choose a Relayer that uses an Open Orderbook strategy or choose other Relayers that are more trusted |
 | Relayers could censor orders and prevent Traders from participating | Matcher | Traders can switch to other Relayers |
 
 
