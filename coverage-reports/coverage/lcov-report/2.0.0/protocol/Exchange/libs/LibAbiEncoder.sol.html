@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for 2.0.0/protocol/Exchange/libs/LibAbiEncoder.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../../index.html">all files</a> / <a href="index.html">2.0.0/protocol/Exchange/libs/</a> LibAbiEncoder.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">66.67% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>2/3</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/1</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">66.67% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>2/3</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">96×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">96×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*
+&nbsp;
+  Copyright 2018 ZeroEx Intl.
+&nbsp;
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+&nbsp;
+    http://www.apache.org/licenses/LICENSE-2.0
+&nbsp;
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+&nbsp;
+*/
+&nbsp;
+pragma solidity 0.4.24;
+pragma experimental ABIEncoderV2;
+&nbsp;
+import "./LibOrder.sol";
+&nbsp;
+&nbsp;
+contract LibAbiEncoder {
+&nbsp;
+    /// @dev ABI encodes calldata for `fillOrder`.
+    /// @param order Order struct containing order specifications.
+    /// @param takerAssetFillAmount Desired amount of takerAsset to sell.
+    /// @param signature Proof that order has been created by maker.
+    /// @return ABI encoded calldata for `fillOrder`.
+    function abiEncodeFillOrder(
+        LibOrder.Order memory order,
+        uint256 takerAssetFillAmount,
+        bytes memory signature
+    )
+        internal
+        pure
+        returns (bytes memory fillOrderCalldata)
+    {
+        // We need to call MExchangeCore.fillOrder using a delegatecall in
+        // assembly so that we can intercept a call that throws. For this, we
+        // need the input encoded in memory in the Ethereum ABIv2 format [1].
+&nbsp;
+        // | Area     | Offset | Length  | Contents                                    |
+        // | -------- |--------|---------|-------------------------------------------- |
+        // | Header   | 0x00   | 4       | function selector                           |
+        // | Params   |        | 3 * 32  | function parameters:                        |
+        // |          | 0x00   |         |   1. offset to order (*)                    |
+        // |          | 0x20   |         |   2. takerAssetFillAmount                   |
+        // |          | 0x40   |         |   3. offset to signature (*)                |
+        // | Data     |        | 12 * 32 | order:                                      |
+        // |          | 0x000  |         |   1.  senderAddress                         |
+        // |          | 0x020  |         |   2.  makerAddress                          |
+        // |          | 0x040  |         |   3.  takerAddress                          |
+        // |          | 0x060  |         |   4.  feeRecipientAddress                   |
+        // |          | 0x080  |         |   5.  makerAssetAmount                      |
+        // |          | 0x0A0  |         |   6.  takerAssetAmount                      |
+        // |          | 0x0C0  |         |   7.  makerFeeAmount                        |
+        // |          | 0x0E0  |         |   8.  takerFeeAmount                        |
+        // |          | 0x100  |         |   9.  expirationTimeSeconds                 |
+        // |          | 0x120  |         |   10. salt                                  |
+        // |          | 0x140  |         |   11. Offset to makerAssetData (*)          |
+        // |          | 0x160  |         |   12. Offset to takerAssetData (*)          |
+        // |          | 0x180  | 32      | makerAssetData Length                       |
+        // |          | 0x1A0  | **      | makerAssetData Contents                     |
+        // |          | 0x1C0  | 32      | takerAssetData Length                       |
+        // |          | 0x1E0  | **      | takerAssetData Contents                     |
+        // |          | 0x200  | 32      | signature Length                            |
+        // |          | 0x220  | **      | signature Contents                          |
+&nbsp;
+        // * Offsets are calculated from the beginning of the current area: Header, Params, Data:
+        //     An offset stored in the Params area is calculated from the beginning of the Params section.
+        //     An offset stored in the Data area is calculated from the beginning of the Data section.
+&nbsp;
+        // ** The length of dynamic array contents are stored in the field immediately preceeding the contents.
+&nbsp;
+        // [1]: https://solidity.readthedocs.io/en/develop/abi-spec.html
+&nbsp;
+        assembly {
+&nbsp;
+            // Areas below may use the following variables:
+            //   1. &lt;area&gt;Start   -- Start of this area in memory
+            //   2. &lt;area&gt;End     -- End of this area in memory. This value may
+            //                       be precomputed (before writing contents),
+            //                       or it may be computed as contents are written.
+            //   3. &lt;area&gt;Offset  -- Current offset into area. If an area's End
+            //                       is precomputed, this variable tracks the
+            //                       offsets of contents as they are written.
+&nbsp;
+            /////// Setup Header Area ///////
+            // Load free memory pointer
+            fillOrderCalldata := mload(0x40)
+            // bytes4(keccak256("fillOrder((address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256,bytes,bytes),uint256,bytes)"))
+            // = 0xb4be83d5
+            // Leave 0x20 bytes to store the length
+            mstore(add(fillOrderCalldata, 0x20), 0xb4be83d500000000000000000000000000000000000000000000000000000000)
+            let headerAreaEnd := add(fillOrderCalldata, 0x24)
+&nbsp;
+            /////// Setup Params Area ///////
+            // This area is preallocated and written to later.
+            // This is because we need to fill in offsets that have not yet been calculated.
+            let paramsAreaStart := headerAreaEnd
+            let paramsAreaEnd := add(paramsAreaStart, 0x60)
+            let paramsAreaOffset := paramsAreaStart
+&nbsp;
+            /////// Setup Data Area ///////
+            let dataAreaStart := paramsAreaEnd
+            let dataAreaEnd := dataAreaStart
+&nbsp;
+            // Offset from the source data we're reading from
+            let sourceOffset := order
+            // arrayLenBytes and arrayLenWords track the length of a dynamically-allocated bytes array.
+            let arrayLenBytes := 0
+            let arrayLenWords := 0
+&nbsp;
+            /////// Write order Struct ///////
+            // Write memory location of Order, relative to the start of the
+            // parameter list, then increment the paramsAreaOffset respectively.
+            mstore(paramsAreaOffset, sub(dataAreaEnd, paramsAreaStart))
+            paramsAreaOffset := add(paramsAreaOffset, 0x20)
+&nbsp;
+            // Write values for each field in the order
+            // It would be nice to use a loop, but we save on gas by writing
+            // the stores sequentially.
+            mstore(dataAreaEnd, mload(sourceOffset))                            // makerAddress
+            mstore(add(dataAreaEnd, 0x20), mload(add(sourceOffset, 0x20)))      // takerAddress
+            mstore(add(dataAreaEnd, 0x40), mload(add(sourceOffset, 0x40)))      // feeRecipientAddress
+            mstore(add(dataAreaEnd, 0x60), mload(add(sourceOffset, 0x60)))      // senderAddress
+            mstore(add(dataAreaEnd, 0x80), mload(add(sourceOffset, 0x80)))      // makerAssetAmount
+            mstore(add(dataAreaEnd, 0xA0), mload(add(sourceOffset, 0xA0)))      // takerAssetAmount
+            mstore(add(dataAreaEnd, 0xC0), mload(add(sourceOffset, 0xC0)))      // makerFeeAmount
+            mstore(add(dataAreaEnd, 0xE0), mload(add(sourceOffset, 0xE0)))      // takerFeeAmount
+            mstore(add(dataAreaEnd, 0x100), mload(add(sourceOffset, 0x100)))    // expirationTimeSeconds
+            mstore(add(dataAreaEnd, 0x120), mload(add(sourceOffset, 0x120)))    // salt
+            mstore(add(dataAreaEnd, 0x140), mload(add(sourceOffset, 0x140)))    // Offset to makerAssetData
+            mstore(add(dataAreaEnd, 0x160), mload(add(sourceOffset, 0x160)))    // Offset to takerAssetData
+            dataAreaEnd := add(dataAreaEnd, 0x180)
+            sourceOffset := add(sourceOffset, 0x180)
+&nbsp;
+            // Write offset to &lt;order.makerAssetData&gt;
+            mstore(add(dataAreaStart, mul(10, 0x20)), sub(dataAreaEnd, dataAreaStart))
+&nbsp;
+            // Calculate length of &lt;order.makerAssetData&gt;
+            sourceOffset := mload(add(order, 0x140)) // makerAssetData
+            arrayLenBytes := mload(sourceOffset)
+            sourceOffset := add(sourceOffset, 0x20)
+            arrayLenWords := div(add(arrayLenBytes, 0x1F), 0x20)
+&nbsp;
+            // Write length of &lt;order.makerAssetData&gt;
+            mstore(dataAreaEnd, arrayLenBytes)
+            dataAreaEnd := add(dataAreaEnd, 0x20)
+&nbsp;
+            // Write contents of &lt;order.makerAssetData&gt;
+            for {let i := 0} lt(i, arrayLenWords) {i := add(i, 1)} {
+                mstore(dataAreaEnd, mload(sourceOffset))
+                dataAreaEnd := add(dataAreaEnd, 0x20)
+                sourceOffset := add(sourceOffset, 0x20)
+            }
+&nbsp;
+            // Write offset to &lt;order.takerAssetData&gt;
+            mstore(add(dataAreaStart, mul(11, 0x20)), sub(dataAreaEnd, dataAreaStart))
+&nbsp;
+            // Calculate length of &lt;order.takerAssetData&gt;
+            sourceOffset := mload(add(order, 0x160)) // takerAssetData
+            arrayLenBytes := mload(sourceOffset)
+            sourceOffset := add(sourceOffset, 0x20)
+            arrayLenWords := div(add(arrayLenBytes, 0x1F), 0x20)
+&nbsp;
+            // Write length of &lt;order.takerAssetData&gt;
+            mstore(dataAreaEnd, arrayLenBytes)
+            dataAreaEnd := add(dataAreaEnd, 0x20)
+&nbsp;
+            // Write contents of  &lt;order.takerAssetData&gt;
+            for {let i := 0} lt(i, arrayLenWords) {i := add(i, 1)} {
+                mstore(dataAreaEnd, mload(sourceOffset))
+                dataAreaEnd := add(dataAreaEnd, 0x20)
+                sourceOffset := add(sourceOffset, 0x20)
+            }
+&nbsp;
+            /////// Write takerAssetFillAmount ///////
+            mstore(paramsAreaOffset, takerAssetFillAmount)
+            paramsAreaOffset := add(paramsAreaOffset, 0x20)
+&nbsp;
+            /////// Write signature ///////
+            // Write offset to paramsArea
+            mstore(paramsAreaOffset, sub(dataAreaEnd, paramsAreaStart))
+&nbsp;
+            // Calculate length of signature
+            sourceOffset := signature
+            arrayLenBytes := mload(sourceOffset)
+            sourceOffset := add(sourceOffset, 0x20)
+            arrayLenWords := div(add(arrayLenBytes, 0x1F), 0x20)
+&nbsp;
+            // Write length of signature
+            mstore(dataAreaEnd, arrayLenBytes)
+            dataAreaEnd := add(dataAreaEnd, 0x20)
+&nbsp;
+            // Write contents of signature
+            for {let i := 0} lt(i, arrayLenWords) {i := add(i, 1)} {
+                mstore(dataAreaEnd, mload(sourceOffset))
+                dataAreaEnd := add(dataAreaEnd, 0x20)
+                sourceOffset := add(sourceOffset, 0x20)
+            }
+&nbsp;
+            // Set length of calldata
+            mstore(fillOrderCalldata, sub(dataAreaEnd, add(fillOrderCalldata, 0x20)))
+&nbsp;
+            // Increment free memory pointer
+            mstore(0x40, dataAreaEnd)
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return fillOrderCalldata;</span>
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Aug 26 2018 17:05:56 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../../sorter.js"></script>
+</body>
+</html>
