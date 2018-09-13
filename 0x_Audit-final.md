@@ -162,8 +162,8 @@ The following table contains all the issues discovered during the audit. The iss
 
 | Chapter | Issue Title  | Issue Status | Severity |
 | ------------- | ------------- | ------------- | ------------- |
- | 3.1 | [A malicious maker can empty a taker’s account of all tokens.](#31-a-malicious-maker-can-empty-a-taker’s-account-of-all-tokens-) | <img height="30px" src="static-content/closed.png"/>| <img height="30px" src="static-content/critical.png"/> | 
- | 3.2 | [MixinSignatureValidator: Insecure signature validator SignatureType.Caller](#32-mixinsignaturevalidator-insecure-signature-validator-signaturetype-caller) | <img height="30px" src="static-content/closed.png"/>| <img height="30px" src="static-content/critical.png"/> | 
+ | 3.1 | [A malicious maker can empty a taker’s account of all tokens.](#31-a-malicious-maker-can-empty-a-takers-account-of-all-tokens) | <img height="30px" src="static-content/closed.png"/>| <img height="30px" src="static-content/critical.png"/> | 
+ | 3.2 | [MixinSignatureValidator: Insecure signature validator SignatureType.Caller](#32-mixinsignaturevalidator-insecure-signature-validator-signaturetypecaller) | <img height="30px" src="static-content/closed.png"/>| <img height="30px" src="static-content/critical.png"/> | 
  | 3.3 | [Use of outdated multisig wallet](#33-use-of-outdated-multisig-wallet) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
  | 3.4 | [AssetProxyOwner: Insufficient Testing](#34-assetproxyowner-insufficient-testing) | <img height="30px" src="static-content/open.png"/>| <img height="30px" src="static-content/medium.png"/> | 
  | 3.5 | [AssetProxyOwner: timelocked transactions affected by changing wallet parameters](#35-assetproxyowner-timelocked-transactions-affected-by-changing-wallet-parameters) | <img height="30px" src="static-content/closed.png"/>| <img height="30px" src="static-content/medium.png"/> | 
