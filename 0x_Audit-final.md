@@ -119,7 +119,7 @@ The audit focus was on the smart contract files, and test suites found in the fo
 
 |  Directory | Commit hash | Commit date |
 |----------|-------------|-------------|
-| [packages/contracts/src/2.0.0/forwarder](https://github.com/0xProject/0x-monorepo/commit/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/forwarder)<br/> [packages/contracts/src/2.0.0/protocol](https://github.com/0xProject/0x-monorepo/commit/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/protocol)<br/> [packages/contracts/src/2.0.0/utils](https://github.com/0xProject/0x-monorepo/commit/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/utils)  | a05b14e4d9659be1cc495ee33fd8962ce773f87f          | 23rd July 2018|
+| [packages/contracts/src/2.0.0/forwarder](https://github.com/0xProject/0x-monorepo/tree/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/forwarder)<br/> [packages/contracts/src/2.0.0/protocol](https://github.com/0xProject/0x-monorepo/tree/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/protocol)<br/> [packages/contracts/src/2.0.0/utils](https://github.com/0xProject/0x-monorepo/tree/a05b14e4d9659be1cc495ee33fd8962ce773f87f/packages/contracts/src/2.0.0/utils)  | a05b14e4d9659be1cc495ee33fd8962ce773f87f          | 23rd July 2018|
 
 
 #### Architecture
